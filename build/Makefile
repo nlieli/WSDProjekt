@@ -128,53 +128,53 @@ WSD/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\WSD.dir\build.make CMakeFiles/WSD.dir/build
 .PHONY : WSD/fast
 
-main.obj: main.cpp.obj
-.PHONY : main.obj
+src/main.obj: src/main.cpp.obj
+.PHONY : src/main.obj
 
 # target to build an object file
-main.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\WSD.dir\build.make CMakeFiles/WSD.dir/main.cpp.obj
-.PHONY : main.cpp.obj
+src/main.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\WSD.dir\build.make CMakeFiles/WSD.dir/src/main.cpp.obj
+.PHONY : src/main.cpp.obj
 
-main.i: main.cpp.i
-.PHONY : main.i
+src/main.i: src/main.cpp.i
+.PHONY : src/main.i
 
 # target to preprocess a source file
-main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\WSD.dir\build.make CMakeFiles/WSD.dir/main.cpp.i
-.PHONY : main.cpp.i
+src/main.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\WSD.dir\build.make CMakeFiles/WSD.dir/src/main.cpp.i
+.PHONY : src/main.cpp.i
 
-main.s: main.cpp.s
-.PHONY : main.s
+src/main.s: src/main.cpp.s
+.PHONY : src/main.s
 
 # target to generate assembly for a file
-main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\WSD.dir\build.make CMakeFiles/WSD.dir/main.cpp.s
-.PHONY : main.cpp.s
+src/main.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\WSD.dir\build.make CMakeFiles/WSD.dir/src/main.cpp.s
+.PHONY : src/main.cpp.s
 
-print.obj: print.cpp.obj
-.PHONY : print.obj
+src/print.obj: src/print.cpp.obj
+.PHONY : src/print.obj
 
 # target to build an object file
-print.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\WSD.dir\build.make CMakeFiles/WSD.dir/print.cpp.obj
-.PHONY : print.cpp.obj
+src/print.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\WSD.dir\build.make CMakeFiles/WSD.dir/src/print.cpp.obj
+.PHONY : src/print.cpp.obj
 
-print.i: print.cpp.i
-.PHONY : print.i
+src/print.i: src/print.cpp.i
+.PHONY : src/print.i
 
 # target to preprocess a source file
-print.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\WSD.dir\build.make CMakeFiles/WSD.dir/print.cpp.i
-.PHONY : print.cpp.i
+src/print.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\WSD.dir\build.make CMakeFiles/WSD.dir/src/print.cpp.i
+.PHONY : src/print.cpp.i
 
-print.s: print.cpp.s
-.PHONY : print.s
+src/print.s: src/print.cpp.s
+.PHONY : src/print.s
 
 # target to generate assembly for a file
-print.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\WSD.dir\build.make CMakeFiles/WSD.dir/print.cpp.s
-.PHONY : print.cpp.s
+src/print.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\WSD.dir\build.make CMakeFiles/WSD.dir/src/print.cpp.s
+.PHONY : src/print.cpp.s
 
 # Help Target
 help:
@@ -185,12 +185,12 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... WSD
-	@echo ... main.obj
-	@echo ... main.i
-	@echo ... main.s
-	@echo ... print.obj
-	@echo ... print.i
-	@echo ... print.s
+	@echo ... src/main.obj
+	@echo ... src/main.i
+	@echo ... src/main.s
+	@echo ... src/print.obj
+	@echo ... src/print.i
+	@echo ... src/print.s
 .PHONY : help
 
 

@@ -68,44 +68,44 @@ include CMakeFiles/WSD.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/WSD.dir/flags.make
 
-CMakeFiles/WSD.dir/main.cpp.obj: CMakeFiles/WSD.dir/flags.make
-CMakeFiles/WSD.dir/main.cpp.obj: C:/CProjects/main.cpp
-CMakeFiles/WSD.dir/main.cpp.obj: CMakeFiles/WSD.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\CProjects\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/WSD.dir/main.cpp.obj"
-	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/WSD.dir/main.cpp.obj -MF CMakeFiles\WSD.dir\main.cpp.obj.d -o CMakeFiles\WSD.dir\main.cpp.obj -c C:\CProjects\main.cpp
+CMakeFiles/WSD.dir/src/main.cpp.obj: CMakeFiles/WSD.dir/flags.make
+CMakeFiles/WSD.dir/src/main.cpp.obj: C:/CProjects/src/main.cpp
+CMakeFiles/WSD.dir/src/main.cpp.obj: CMakeFiles/WSD.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\CProjects\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/WSD.dir/src/main.cpp.obj"
+	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/WSD.dir/src/main.cpp.obj -MF CMakeFiles\WSD.dir\src\main.cpp.obj.d -o CMakeFiles\WSD.dir\src\main.cpp.obj -c C:\CProjects\src\main.cpp
 
-CMakeFiles/WSD.dir/main.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/WSD.dir/main.cpp.i"
-	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\CProjects\main.cpp > CMakeFiles\WSD.dir\main.cpp.i
+CMakeFiles/WSD.dir/src/main.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/WSD.dir/src/main.cpp.i"
+	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\CProjects\src\main.cpp > CMakeFiles\WSD.dir\src\main.cpp.i
 
-CMakeFiles/WSD.dir/main.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/WSD.dir/main.cpp.s"
-	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\CProjects\main.cpp -o CMakeFiles\WSD.dir\main.cpp.s
+CMakeFiles/WSD.dir/src/main.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/WSD.dir/src/main.cpp.s"
+	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\CProjects\src\main.cpp -o CMakeFiles\WSD.dir\src\main.cpp.s
 
-CMakeFiles/WSD.dir/print.cpp.obj: CMakeFiles/WSD.dir/flags.make
-CMakeFiles/WSD.dir/print.cpp.obj: C:/CProjects/print.cpp
-CMakeFiles/WSD.dir/print.cpp.obj: CMakeFiles/WSD.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\CProjects\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/WSD.dir/print.cpp.obj"
-	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/WSD.dir/print.cpp.obj -MF CMakeFiles\WSD.dir\print.cpp.obj.d -o CMakeFiles\WSD.dir\print.cpp.obj -c C:\CProjects\print.cpp
+CMakeFiles/WSD.dir/src/print.cpp.obj: CMakeFiles/WSD.dir/flags.make
+CMakeFiles/WSD.dir/src/print.cpp.obj: C:/CProjects/src/print.cpp
+CMakeFiles/WSD.dir/src/print.cpp.obj: CMakeFiles/WSD.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\CProjects\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/WSD.dir/src/print.cpp.obj"
+	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/WSD.dir/src/print.cpp.obj -MF CMakeFiles\WSD.dir\src\print.cpp.obj.d -o CMakeFiles\WSD.dir\src\print.cpp.obj -c C:\CProjects\src\print.cpp
 
-CMakeFiles/WSD.dir/print.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/WSD.dir/print.cpp.i"
-	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\CProjects\print.cpp > CMakeFiles\WSD.dir\print.cpp.i
+CMakeFiles/WSD.dir/src/print.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/WSD.dir/src/print.cpp.i"
+	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\CProjects\src\print.cpp > CMakeFiles\WSD.dir\src\print.cpp.i
 
-CMakeFiles/WSD.dir/print.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/WSD.dir/print.cpp.s"
-	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\CProjects\print.cpp -o CMakeFiles\WSD.dir\print.cpp.s
+CMakeFiles/WSD.dir/src/print.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/WSD.dir/src/print.cpp.s"
+	C:\msys64\ucrt64\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\CProjects\src\print.cpp -o CMakeFiles\WSD.dir\src\print.cpp.s
 
 # Object files for target WSD
 WSD_OBJECTS = \
-"CMakeFiles/WSD.dir/main.cpp.obj" \
-"CMakeFiles/WSD.dir/print.cpp.obj"
+"CMakeFiles/WSD.dir/src/main.cpp.obj" \
+"CMakeFiles/WSD.dir/src/print.cpp.obj"
 
 # External object files for target WSD
 WSD_EXTERNAL_OBJECTS =
 
-WSD.exe: CMakeFiles/WSD.dir/main.cpp.obj
-WSD.exe: CMakeFiles/WSD.dir/print.cpp.obj
+WSD.exe: CMakeFiles/WSD.dir/src/main.cpp.obj
+WSD.exe: CMakeFiles/WSD.dir/src/print.cpp.obj
 WSD.exe: CMakeFiles/WSD.dir/build.make
 WSD.exe: CMakeFiles/WSD.dir/linkLibs.rsp
 WSD.exe: CMakeFiles/WSD.dir/objects1.rsp

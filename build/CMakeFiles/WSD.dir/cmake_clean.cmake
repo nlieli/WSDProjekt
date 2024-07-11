@@ -1,8 +1,8 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/WSD.dir/main.cpp.obj"
-  "CMakeFiles/WSD.dir/main.cpp.obj.d"
-  "CMakeFiles/WSD.dir/print.cpp.obj"
-  "CMakeFiles/WSD.dir/print.cpp.obj.d"
+  "CMakeFiles/WSD.dir/src/main.cpp.obj"
+  "CMakeFiles/WSD.dir/src/main.cpp.obj.d"
+  "CMakeFiles/WSD.dir/src/print.cpp.obj"
+  "CMakeFiles/WSD.dir/src/print.cpp.obj.d"
   "WSD.exe"
   "WSD.exe.manifest"
   "WSD.pdb"

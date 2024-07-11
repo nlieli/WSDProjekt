@@ -1,14 +1,14 @@
 [
 {
   "directory": "C:/CProjects/build",
-  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe   -g -o CMakeFiles\\WSD.dir\\main.cpp.obj -c C:\\CProjects\\main.cpp",
-  "file": "C:/CProjects/main.cpp",
-  "output": "CMakeFiles/WSD.dir/main.cpp.obj"
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe   -g -o CMakeFiles\\WSD.dir\\src\\main.cpp.obj -c C:\\CProjects\\src\\main.cpp",
+  "file": "C:/CProjects/src/main.cpp",
+  "output": "CMakeFiles/WSD.dir/src/main.cpp.obj"
 },
 {
   "directory": "C:/CProjects/build",
-  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe   -g -o CMakeFiles\\WSD.dir\\print.cpp.obj -c C:\\CProjects\\print.cpp",
-  "file": "C:/CProjects/print.cpp",
-  "output": "CMakeFiles/WSD.dir/print.cpp.obj"
+  "command": "C:\\msys64\\ucrt64\\bin\\g++.exe   -g -o CMakeFiles\\WSD.dir\\src\\print.cpp.obj -c C:\\CProjects\\src\\print.cpp",
+  "file": "C:/CProjects/src/print.cpp",
+  "output": "CMakeFiles/WSD.dir/src/print.cpp.obj"
 }
 ]
