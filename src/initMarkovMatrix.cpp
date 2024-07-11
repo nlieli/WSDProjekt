@@ -1,29 +1,40 @@
+#include <iostream>
+#include <sstream>
+#include <fstream>
+#include <Markov.h>
 
-class MarkovMatrix 
+MarkovMatrix::MarkovMatrix(const char* fileName)
 {
-    int wordCount;
+    loadFile(fileName);
+}
 
-public:
-    void initMatrix(const char* textFile)
+int MarkovMatrix::loadFile(const char* FileName)
+{
+    std::ifstream fileIn;
+    fileIn.open(FileName);
+    if (fileIn.fail())
+    {
+        std::cerr << "Check file name/directory";
+        return 1;
+    }
+
+    fileIn.close();
+    return 0;
+}
+
+    void MarkovMatrix::tokenizeFile()
+    {
+
+   }
+
+    void MarkovMatrix::calculateNodeProbabilites()
     {
 
     }
 
-private:
-    void tokenizeFile()
+    void MarkovMatrix::normalizeMatrix()
     {
 
     }
-
-    void calculateNodeProbabilites()
-    {
-
-    }
-
-    void normalizeMatrix()
-    {
-        
-    }
-};
 
 int main();

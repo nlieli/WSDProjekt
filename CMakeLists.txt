@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 3.5.0)
 project(WSD VERSION 0.1.0 LANGUAGES C CXX)
 
-add_executable(WSD src/test.cpp)
+add_executable(WSD src/initMarkovMatrix.cpp src/main.cpp)
+
+include_directories(include)
 
 set(OUTPUT_DIR ${CMAKE_SOURCE_DIR}/bin)
 
