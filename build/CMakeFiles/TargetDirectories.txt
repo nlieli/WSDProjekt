@@ -1,3 +1,0 @@
-C:/CProjects/build/CMakeFiles/WSD.dir
-C:/CProjects/build/CMakeFiles/edit_cache.dir
-C:/CProjects/build/CMakeFiles/rebuild_cache.dir
