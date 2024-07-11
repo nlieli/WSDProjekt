@@ -1,6 +1,4 @@
 #pragma once
-#ifndef MARKOVMATRIX_H
-#define MARKOVMATRIX_H
 
 class MarkovMatrix 
 {
@@ -17,4 +15,3 @@ private:
     void calculateNodeProbabilites();
     void normalizeMatrix();
 };
-#endif
