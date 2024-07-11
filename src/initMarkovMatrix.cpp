@@ -8,6 +8,7 @@ public:
     {
 
     }
+
 private:
     void tokenizeFile()
     {
