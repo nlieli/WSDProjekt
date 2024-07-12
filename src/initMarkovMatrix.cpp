@@ -13,8 +13,8 @@ initMarkovMatrix::initMarkovMatrix(const char* fileName)
     uniqueWordList = findUniqueWords(fullWordList);
     numUniqueWords = uniqueWordList.size();
     
-    // std::cout << fullWordList.size() << std::endl; 
-    // std::cout << uniqueWordList.size() << std::endl; 
+    std::cout << fullWordList.size() << std::endl; 
+    std::cout << uniqueWordList.size() << std::endl; 
 }
 
 StringVector initMarkovMatrix::loadFile(const char* FileName)
@@ -53,10 +53,6 @@ StringVector initMarkovMatrix::findUniqueWords(StringVector wordList)
 }
 
 void initMarkovMatrix::calculateNodeProbabilites()
-{
-}
-
-void initMarkovMatrix::normalizeMatrix()
 {
 }
 
