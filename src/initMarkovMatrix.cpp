@@ -3,12 +3,12 @@
 #include <fstream>
 #include <Markov.h>
 
-MarkovMatrix::MarkovMatrix(const char* fileName)
+MarkovMatrix::MarkovMatrix(const char *fileName)
 {
     loadFile(fileName);
 }
 
-int MarkovMatrix::loadFile(const char* FileName)
+int MarkovMatrix::loadFile(const char *FileName)
 {
     std::ifstream fileIn;
     fileIn.open(FileName);
@@ -22,19 +22,16 @@ int MarkovMatrix::loadFile(const char* FileName)
     return 0;
 }
 
-    void MarkovMatrix::tokenizeFile()
-    {
+void MarkovMatrix::tokenizeFile()
+{
+}
 
-   }
+void MarkovMatrix::calculateNodeProbabilites()
+{
+}
 
-    void MarkovMatrix::calculateNodeProbabilites()
-    {
-
-    }
-
-    void MarkovMatrix::normalizeMatrix()
-    {
-
-    }
+void MarkovMatrix::normalizeMatrix()
+{
+}
 
 int main();
