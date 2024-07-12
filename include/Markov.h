@@ -1,20 +1,21 @@
 #pragma once
-// #include <string>
+#include <string>
+#include <vector>
 
 class MarkovMatrix
 {
     // --- properties
-    std::string text;
+    std::vector<std::string> tokenVector; //uses the vector template to create a custom vector type that takes std::string's as input
+    std::string word;
         
 public:
-    int wordCount;
+    int numUniqueWords;
 
     // --- methods
     MarkovMatrix(const char* fileName);
 
 private:
-    std::string loadFile(const char* FileName);
-    void tokenizeFile();
+    std::vector<std::string> loadFile(const char* FileName);
     void calculateNodeProbabilites();
     void normalizeMatrix();
 };
