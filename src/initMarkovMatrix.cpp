@@ -3,10 +3,15 @@
 #include <fstream>
 #include "Markov.h"
 #include <vector>
+#include <algorithm>
 
 MarkovMatrix::MarkovMatrix(const char* fileName)
 {
-    loadFile(fileName);
+    fullWordList = loadFile(fileName);
+    uniqueWordList = findUniqueWords(fullWordList);
+
+    std::cout << fullWordList.size() << std::endl; 
+    std::cout << uniqueWordList.size() << std::endl; 
 }
 
 std::vector<std::string> MarkovMatrix::loadFile(const char* FileName)
@@ -30,6 +35,18 @@ std::vector<std::string> MarkovMatrix::loadFile(const char* FileName)
         txtFileStream.close();
         return tokenVector;
     }
+}
+
+std::vector<std::string> MarkovMatrix::findUniqueWords(std::vector<std::string> wordList)
+{
+    //SORTING ALGORITHM NEEDED HERE
+
+
+    std::vector<std::string>::iterator it; 
+    it = std::unique(wordList.begin(), wordList.end()); // removes all but first element of every CONSECUTIVE group - also puts iterator at new past-the-end element 
+    wordList.resize(distance(wordList.begin(), it)); // shortens the vector from beginning to new past-the-end flag element provided by iterator
+
+    return wordList;
 }
 
 void MarkovMatrix::calculateNodeProbabilites()
