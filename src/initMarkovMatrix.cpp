@@ -41,7 +41,7 @@ StringVector initMarkovMatrix::loadFile(const char* FileName)
     }
 }
 
-StringVector initMarkovMatrix::findUniqueWords(StringVector wordList)
+StringVector initMarkovMatrix::findUniqueWords(std::vector<std::string> wordList)
 {
     sort(wordList.begin(), wordList.end());
 
