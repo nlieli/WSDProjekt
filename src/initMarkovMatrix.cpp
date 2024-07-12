@@ -3,23 +3,28 @@
 #include <fstream>
 #include <Markov.h>
 
-MarkovMatrix::MarkovMatrix(const char *fileName)
+MarkovMatrix::MarkovMatrix(const char* fileName)
 {
-    loadFile(fileName);
+    text = loadFile(fileName);
 }
 
-int MarkovMatrix::loadFile(const char *FileName)
+std::string MarkovMatrix::loadFile(const char* FileName)
 {
-    std::ifstream fileIn;
-    fileIn.open(FileName);
-    if (fileIn.fail())
+    std::ifstream input;
+    input.open(FileName);
+    if (input.fail())
     {
-        std::cerr << "Check file name/directory";
-        return 1;
+        std::cerr << "[ERROR]: Could not open file. Check file name/directory" << std::endl;
+        return 0;
     }
-
-    fileIn.close();
-    return 0;
+    else
+    {
+        std::stringstream ss;
+        ss << input.rdbuf(); // store entire inputbuffer in the new stringstream object
+        std::string fileContent = ss.str(); // gets content of stringstream object and returns it as a string
+        input.close();
+        return fileContent;
+    }
 }
 
 void MarkovMatrix::tokenizeFile()

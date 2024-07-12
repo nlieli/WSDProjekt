@@ -1,16 +1,19 @@
 #pragma once
+// #include <string>
 
-class MarkovMatrix 
+class MarkovMatrix
 {
-// --- properties
+    // --- properties
+    std::string text;
+        
 public:
     int wordCount;
 
-// --- methods
+    // --- methods
     MarkovMatrix(const char* fileName);
 
 private:
-    int loadFile(const char* FileName);
+    std::string loadFile(const char* FileName);
     void tokenizeFile();
     void calculateNodeProbabilites();
     void normalizeMatrix();
