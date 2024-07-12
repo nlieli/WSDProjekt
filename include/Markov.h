@@ -2,23 +2,28 @@
 #include <string>
 #include <vector>
 
-class MarkovMatrix
+using StringVector = std::vector<std::string>; //uses the vector template to create a custom vector type that takes std::string's as input
+
+class initMarkovMatrix
 {
     // --- properties
-    std::vector<std::string> tokenVector; //uses the vector template to create a custom vector type that takes std::string's as input
     std::string word;
         
 public:
     int numUniqueWords;
-    std::vector<std::string> fullWordList;
-    std::vector<std::string> uniqueWordList;
+    StringVector fullWordList;
+    StringVector uniqueWordList;
 
     // --- methods
-    MarkovMatrix(const char* fileName);
+    initMarkovMatrix(const char* fileName);
 
 private:
-    std::vector<std::string> loadFile(const char* FileName);
-    std::vector<std::string> findUniqueWords(std::vector<std::string> wordList);
+    StringVector loadFile(const char* FileName);
+    StringVector findUniqueWords(StringVector wordList);
     void calculateNodeProbabilites();
     void normalizeMatrix();
+};
+
+class MarkovMatrix : public initMarkovMatrix {
+
 };
