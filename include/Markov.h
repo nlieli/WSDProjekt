@@ -1,20 +1,25 @@
 #pragma once
-#ifndef MARKOVMATRIX_H
-#define MARKOVMATRIX_H
+#include <string>
+#include <vector>
 
-class MarkovMatrix 
+class initMarkovMatrix
 {
-// --- properties
+    // --- properties
+    std::string word;
+        
 public:
-    int wordCount;
-
-// --- methods
-    MarkovMatrix(const char* fileName);
+    int numUniqueWords;
+    std::vector<std::string> fullWordList;
+    std::vector<std::string> uniqueWordList;
+    initMarkovMatrix(const char* fileName);
 
 private:
-    int loadFile(const char* FileName);
-    void tokenizeFile();
+    std::vector<std::string> loadFile(const char* FileName);
+    std::vector<std::string> findUniqueWords(std::vector<std::string> wordList);
     void calculateNodeProbabilites();
-    void normalizeMatrix();
 };
-#endif
+
+class MarkovMatrix : public initMarkovMatrix
+{
+
+};
