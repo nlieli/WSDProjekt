@@ -3,6 +3,6 @@
 
 int main()
 {
-    initMarkovMatrix testMatrix("../data/english/english_random_topic.txt"); 
+    MarkovMatrix testMatrix("../data/english/english_random_topic.txt"); 
     return 0;
 }  

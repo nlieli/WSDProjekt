@@ -7,6 +7,8 @@
 
 using StringVector = std::vector<std::string>;
 
+// --- Miscellaneous function
+
 int findIndex(StringVector& listOfWords, std::string searchItem)
 {
     int index;
@@ -26,24 +28,25 @@ int findIndex(StringVector& listOfWords, std::string searchItem)
 
 // ---method definitions
 
-initMarkovMatrix::initMarkovMatrix(const char* fileName)
+MarkovMatrix::MarkovMatrix(const char* fileName)
 {
     fullWordList = loadFile(fileName);
     uniqueWordList = findUniqueWords(fullWordList);
 
-    // std::cout << fullWordList.size() << std::endl; 
-    // std::cout << uniqueWordList.size() << std::endl; 
     int n = uniqueWordList.size();
-    std::vector<std::vector<int>> Matrix(n, std::vector<int>(n));
-    std::vector<int> normVec(n);
+
+    std::vector<std::vector<int>> Matrix(n, std::vector<int>(n)); // nxn Matrix
+    std::vector<int> normVec(n); // vector that holds the normalization constant for each column of Matrix
+
     createMatrix(uniqueWordList, fullWordList, Matrix, normVec);
 }
 
-StringVector initMarkovMatrix::loadFile(const char* FileName)
+StringVector MarkovMatrix::loadFile(const char* FileName)
 {
     std::string word;
     std::ifstream txtFileStream;
     txtFileStream.open(FileName);
+
     if (txtFileStream.fail())
     {
         std::cerr << "[ERROR]: Could not open file. Check file name/directory\n";
@@ -64,7 +67,7 @@ StringVector initMarkovMatrix::loadFile(const char* FileName)
     }
 }
 
-StringVector initMarkovMatrix::findUniqueWords(StringVector wordList)
+StringVector MarkovMatrix::findUniqueWords(StringVector wordList)
 {
     sort(wordList.begin(), wordList.end());
 
@@ -75,32 +78,27 @@ StringVector initMarkovMatrix::findUniqueWords(StringVector wordList)
     return wordList;
 }
 
-void initMarkovMatrix::createMatrix(StringVector& UniqueWords, StringVector& AllWords, std::vector<std::vector<int>>& Matrix, std::vector<int>& NormVector)
+void MarkovMatrix::createMatrix(StringVector& UniqueWords, StringVector& AllWords, std::vector<std::vector<int>>& Matrix, std::vector<int>& NormVector)
 {
     int eof = AllWords.size();
     int j, k;
+
     for (int i = 0; i < eof; i++)
     {
-        if (!(i % 2)) // optimizes efficiency - findIndex() is only called every second iteration
-        {
-            j = findIndex(UniqueWords, AllWords[i]);
-        }
-        else 
-        {
-            j = k;
-        }
-
+        j = k; // previous node exit becomes focus
         k = findIndex(UniqueWords, AllWords[i + 1]);
+
+        if (i == 0) // first word in file
+            j = findIndex(UniqueWords, AllWords[0]);
 
         Matrix[j][k]++;
         NormVector[j]++;
+
         if (i == eof - 2) // prevents going out of bounds
             return;
     }
 }
 
-void initMarkovMatrix::calculateNodeProbabilites()
+void MarkovMatrix::calculateNodeProbabilites()
 {
 }
-
-int main();
