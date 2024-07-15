@@ -4,12 +4,12 @@
 
 // --- Matrix operations
 
-std::vector<std::vector<int>> operator*(std::vector<std::vector<int>> firstMatrix,
-    std::vector<std::vector<int>> secondMatrix);  // Matrix - Matrix multiplication - overloaded operator
+std::vector<std::vector<float>> operator*(std::vector<std::vector<float>>& firstMatrix,
+    std::vector<std::vector<float>>& secondMatrix);  // Matrix - Matrix multiplication - overloaded operator
 
-std::vector<std::vector<int>> multiplyMatrices(std::vector<std::vector<int>> firstMatrix,
-    std::vector<std::vector<int>> secondMatrix); // Matrix - Matrix multiplication
+std::vector<std::vector<float>> multiplyMatrices(std::vector<std::vector<float>>& firstMatrix,
+    std::vector<std::vector<float>>& secondMatrix); // Matrix - Matrix multiplication
 
-std::vector<int> operator*(std::vector<std::vector<int>> Matrix, std::vector<int> Vector); // Matrix - Vector multiplication - overloaded operator
+std::vector<float> operator*(std::vector<std::vector<float>>& Matrix, std::vector<float>& Vector); // Matrix - Vector multiplication - overloaded operator
 
-std::vector<int> multiplyMatrixVector(std::vector<std::vector<int>> Matrix, std::vector<int> Vector); // Matrix - Vector multiplication
+std::vector<float> multiplyMatrixVector(std::vector<std::vector<float>>& Matrix, std::vector<float>& Vector); // Matrix - Vector multiplication

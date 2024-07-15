@@ -11,10 +11,10 @@ class MarkovMatrix
 {
     // --- properties
 public:
-    std::vector<std::string> fullWordList;
-    std::vector<std::string> uniqueWordList;
 
 private:
+    std::vector<std::string> fullWordList;
+    std::vector<std::string> uniqueWordList;
 
     // --- methods
 public:
@@ -24,6 +24,6 @@ private:
     std::vector<std::string> loadFile(const char* FileName);
     std::vector<std::string> findUniqueWords(std::vector<std::string> wordList);
     void createMatrix(std::vector<std::string>& UniqueWords, std::vector<std::string>& AllWords,
-        std::vector<std::vector<int>>& Matrix, std::vector<int>& NormVector);
-    void calculateNodeProbabilites();
+        std::vector<std::vector<float>>& Matrix, std::vector<int>& NormVector);
+    void normalizeMatrix(std::vector<std::vector<float>>& Matrix, std::vector<int>& Vector);
 };

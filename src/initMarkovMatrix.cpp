@@ -7,25 +7,6 @@
 
 using StringVector = std::vector<std::string>;
 
-// --- Miscellaneous function
-
-int findIndex(StringVector& listOfWords, std::string searchItem)
-{
-    int index;
-    StringVector::iterator it;
-    it = std::find(listOfWords.begin(), listOfWords.end(), searchItem);
-    if (it != listOfWords.end())
-    {
-        index = it - listOfWords.begin();
-    }
-    else
-    {
-        std::cerr << "[ERROR]: Word \"" << searchItem << "\" was not found in training list\n";
-        index = -1;
-    }
-    return index;
-}
-
 // ---method definitions
 
 MarkovMatrix::MarkovMatrix(const char* fileName)
@@ -33,12 +14,13 @@ MarkovMatrix::MarkovMatrix(const char* fileName)
     fullWordList = loadFile(fileName);
     uniqueWordList = findUniqueWords(fullWordList);
 
-    int n = uniqueWordList.size();
+    size_t n = uniqueWordList.size();
 
-    std::vector<std::vector<int>> Matrix(n, std::vector<int>(n)); // nxn Matrix
+    std::vector<std::vector<float>> Matrix(n, std::vector<float>(n)); // nxn Matrix
     std::vector<int> normVec(n); // vector that holds the normalization constant for each column of Matrix
 
     createMatrix(uniqueWordList, fullWordList, Matrix, normVec);
+    normalizeMatrix(Matrix, normVec);
 }
 
 StringVector MarkovMatrix::loadFile(const char* FileName)
@@ -78,17 +60,17 @@ StringVector MarkovMatrix::findUniqueWords(StringVector wordList)
     return wordList;
 }
 
-void MarkovMatrix::createMatrix(StringVector& UniqueWords, StringVector& AllWords, std::vector<std::vector<int>>& Matrix, std::vector<int>& NormVector)
+void MarkovMatrix::createMatrix(StringVector& UniqueWords, StringVector& AllWords, std::vector<std::vector<float>>& Matrix, std::vector<int>& NormVector)
 {
-    int eof = AllWords.size();
+    size_t eof = AllWords.size();
     int j, k;
 
-    for (int i = 0; i < eof; i++)
+    for (size_t i = 1; i < eof; i++)
     {
         j = k; // previous node exit becomes focus
-        k = findIndex(UniqueWords, AllWords[i + 1]);
+        k = findIndex(UniqueWords, AllWords[i]);
 
-        if (i == 0) // first word in file
+        if (i == 1) // first word in file
             j = findIndex(UniqueWords, AllWords[0]);
 
         Matrix[j][k]++;
@@ -99,6 +81,32 @@ void MarkovMatrix::createMatrix(StringVector& UniqueWords, StringVector& AllWord
     }
 }
 
-void MarkovMatrix::calculateNodeProbabilites()
+void MarkovMatrix::normalizeMatrix(std::vector<std::vector<float>>& Matrix, std::vector<int>& Vector)
 {
+   for (size_t j = 0; j < Matrix[0].size(); j++)
+   {
+        for (size_t i = 0; i < Matrix.size(); i++)
+        {
+           Matrix[i][j] = Matrix[i][j] / Vector[i];
+        }
+   } 
+}
+
+// --- Miscellaneous function
+
+int findIndex(StringVector& listOfWords, std::string searchItem)
+{
+    int index;
+    StringVector::iterator it;
+    it = std::find(listOfWords.begin(), listOfWords.end(), searchItem);
+    if (it != listOfWords.end())
+    {
+        index = it - listOfWords.begin();
+    }
+    else
+    {
+        std::cerr << "[ERROR]: Word \"" << searchItem << "\" was not found in training list\n";
+        index = -1;
+    }
+    return index;
 }
