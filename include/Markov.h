@@ -4,6 +4,13 @@
 #include <vector>
 #include <algorithm>
 
+/* 
+The file tokenizer takes an input file and creates a token when it encounters a " ". These tokens
+are then stored in a vector in the order of which they are encountered. This means in the same order that 
+the text was written in the file. 
+
+A copy of that list is made and sorted by their integer value. This allows for the use of the std::unique iterator.
+*/
 struct FileTokenizer
 {
     // --- properties

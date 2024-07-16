@@ -1,5 +1,6 @@
 #include <string>
 #include <vector>
+#include <random>
 
 // order of operation matters! M1 * M2 represents the left side multiplication of M2 to M1 and M2 * M1 the right side multiplication of M2 to M1.
 
@@ -114,3 +115,38 @@ std::vector<float> multiplyMatrixVector(std::vector<std::vector<float>>& Matrix,
 
     return result;
 }
+
+bool randBool()
+{
+    bool randomBool;
+    std::random_device rd;
+    std::uniform_int_distribution<> dist(0, 1);
+    randomBool = dist(rd);
+    return randomBool;
+}
+
+void renSort(std::vector<std::vector<float>>& orderedVector) // --- randomize equal numbers sort
+{
+    size_t n = orderedVector.size();
+    bool swapped;
+
+    do { // --- modified bubblesort algorithm
+        swapped = false;
+        n--;
+
+        for (size_t i = 0; i < n; i++)
+        {
+            if (orderedVector[i][1] > orderedVector[i + 1][1])
+            {
+                swapped = true;
+                std::swap(orderedVector[i], orderedVector[i + 1]);
+            }
+            else if ((orderedVector[i][1] == orderedVector[i + 1][1]) && randBool())
+            {
+                std::swap(orderedVector[i], orderedVector[i + 1]);
+            }
+        }
+
+    } while (swapped);
+}
+
