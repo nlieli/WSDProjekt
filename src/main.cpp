@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Markov.h"
+#include "MarkovClass.h"
 
 int main()
 {

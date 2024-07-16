@@ -1,29 +1,42 @@
-#pragma once
-#include <string>
+#include <iostream>
+#include <sstream>
+#include <fstream>
 #include <vector>
+#include <algorithm>
 
-// --- Miscellaneous functions
-int findIndex(std::vector<std::string>& listOfWords, std::string searchItem);
+struct FileTokenizer
+{
+    // --- properties
+    std::vector<std::string> m_fullWordList;
+    std::vector<std::string> m_uniqueWordList;
 
-// --- class definition
+    // --- methods 
+    void loadFile(const char* fileName);
+    void findUniqueWords();
 
-class MarkovMatrix
+};
+
+// --- Markov class
+class Markov
 {
     // --- properties
 public:
+    std::vector<std::vector<float>> m_Matrix;
+    std::vector<float> m_stateVector;
 
 private:
-    std::vector<std::string> fullWordList;
-    std::vector<std::string> uniqueWordList;
-
+    // std::vector<std::vector<int>> m_rawMatrix; //Might reinstate later to make additional features possible
+    std::vector<int> m_normVector;
     // --- methods
 public:
-    MarkovMatrix(const char* fileName);
+    void updateMatrix(std::vector<std::string>& UniqueWords,
+        std::vector<std::string>& AllWords);
+    void updateStateVector(std::vector<std::string>& wordList, std::string& inputWord);
 
 private:
-    std::vector<std::string> loadFile(const char* FileName);
-    std::vector<std::string> findUniqueWords(std::vector<std::string> wordList);
-    void createMatrix(std::vector<std::string>& UniqueWords, std::vector<std::string>& AllWords,
-        std::vector<std::vector<float>>& Matrix, std::vector<int>& NormVector);
-    void normalizeMatrix(std::vector<std::vector<float>>& Matrix, std::vector<int>& Vector);
+    void normalizeMatrix(std::vector<std::vector<float>>& Matrix);
+    int findIndex(std::vector<std::string>& listOfWords, std::string searchItem);
 };
+
+// --- Miscellaneous functions
+
