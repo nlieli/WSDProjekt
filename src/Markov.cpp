@@ -2,6 +2,7 @@
 #include <sstream>
 #include <fstream>
 #include "Markov.h"
+#include "Math.h"
 #include <vector>
 #include <algorithm>
 
@@ -32,6 +33,7 @@ void FileTokenizer::loadFile(const char* fileName)
         }
 
         txtFileStream.close();
+        m_totalCount = m_fullWordList.size();
     }
 }
 
@@ -43,6 +45,7 @@ void FileTokenizer::findUniqueWords()
     StringVector_T::iterator it;
     it = std::unique(m_uniqueWordList.begin(), m_uniqueWordList.end()); // removes all but first element of every CONSECUTIVE group - also puts iterator at new past-the-end element 
     m_uniqueWordList.resize(distance(m_uniqueWordList.begin(), it)); // shortens the vector from beginning to new past-the-end flag element provided by iterator
+    m_uniqueCount = m_uniqueWordList.size();
 }
 
 void Markov::updateMatrix(StringVector_T& UniqueWords, StringVector_T& AllWords)
@@ -106,4 +109,32 @@ int Markov::findIndex(StringVector_T& listOfWords, std::string searchItem)
         throw 3;
     }
     return index;
+}
+
+void Markov::predictWord(StringVector_T& UniqueWords)
+{
+    size_t n = m_stateVector.size();
+    FloatMatrix_T probVec(2, std::vector<float>(n));
+    float randomProbabilityValue = randProb();
+    std::string wordPrediction;
+
+    m_stateVector = m_Matrix * m_stateVector;
+
+    for (size_t i = 0; i < n; i++)
+        probVec[0][i] = i;
+
+    probVec[1] = m_stateVector;
+    renSort(probVec);
+
+    for (size_t j = 0; j < n; j++)
+    {
+        if (randomProbabilityValue < probVec[1][j])
+        {
+           wordPrediction = UniqueWords[probVec[0][j]];
+           break;
+        }
+    }
+
+    std::cout << wordPrediction << "\n";
+
 }

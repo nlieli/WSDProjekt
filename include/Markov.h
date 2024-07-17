@@ -16,6 +16,8 @@ struct FileTokenizer
     // --- properties
     std::vector<std::string> m_fullWordList;
     std::vector<std::string> m_uniqueWordList;
+    size_t m_totalCount;
+    size_t m_uniqueCount;
 
     // --- methods 
     void loadFile(const char* fileName);
@@ -39,6 +41,7 @@ public:
     void updateMatrix(std::vector<std::string>& UniqueWords,
         std::vector<std::string>& AllWords);
     void updateStateVector(std::vector<std::string>& wordList, std::string& inputWord);
+    void predictWord(std::vector<std::string>& UniqueWords);
 
 private:
     void normalizeMatrix(std::vector<std::vector<float>>& Matrix);

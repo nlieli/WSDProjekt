@@ -125,9 +125,18 @@ bool randBool()
     return randomBool;
 }
 
+float randProb()
+{
+    float randomProbability;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist(0, 1);
+    randomProbability = dist(rd);
+    return randomProbability;
+}
+
 void renSort(std::vector<std::vector<float>>& orderedVector) // --- randomize equal numbers sort
 {
-    size_t n = orderedVector.size();
+    size_t n = orderedVector[0].size();
     bool swapped;
 
     do { // --- modified bubblesort algorithm
@@ -136,14 +145,16 @@ void renSort(std::vector<std::vector<float>>& orderedVector) // --- randomize eq
 
         for (size_t i = 0; i < n; i++)
         {
-            if (orderedVector[i][1] > orderedVector[i + 1][1])
+            if (orderedVector[1][i] > orderedVector[1][i + 1])
             {
                 swapped = true;
-                std::swap(orderedVector[i], orderedVector[i + 1]);
+                std::swap(orderedVector[0][i], orderedVector[0][i + 1]);
+                std::swap(orderedVector[1][i], orderedVector[1][i + 1]);
             }
-            else if ((orderedVector[i][1] == orderedVector[i + 1][1]) && randBool())
+            else if ((orderedVector[1][i] == orderedVector[1][i + 1]) && randBool())
             {
-                std::swap(orderedVector[i], orderedVector[i + 1]);
+                std::swap(orderedVector[0][i], orderedVector[0][i + 1]);
+                std::swap(orderedVector[1][i], orderedVector[1][i + 1]);
             }
         }
 

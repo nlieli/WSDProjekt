@@ -12,8 +12,11 @@ int main()
 
     Mv.updateMatrix(FT.m_uniqueWordList, FT.m_fullWordList);
 
-    std::cin >> currentWord;
-    Mv.updateStateVector(FT.m_uniqueWordList, currentWord);
-
+    for (;;)
+    {
+        std::cin >> currentWord;
+        Mv.updateStateVector(FT.m_uniqueWordList, currentWord);
+        Mv.predictWord(FT.m_uniqueWordList);
+    }
     return 0;
-} 
+}

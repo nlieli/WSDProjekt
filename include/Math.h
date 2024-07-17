@@ -31,3 +31,4 @@ void renSort(std::vector<std::vector<float>>& orderedVector);
 
 bool randBool();
  
+ float randProb();
