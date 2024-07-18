@@ -165,7 +165,7 @@ void renSort(std::vector<std::vector<float>>& orderedVector) // --- randomize eq
 
 int preSort(std::vector<std::vector<float>>& orderedVector) // puts all non-zero values to the front of the vector (zero values are irrelevant for probability)
 {
-    size_t n = orderedVector.size();
+    size_t n = orderedVector[0].size();
     int swaps = 0;
 
     for (size_t i = 0; i < n; ++i)
@@ -177,7 +177,7 @@ int preSort(std::vector<std::vector<float>>& orderedVector) // puts all non-zero
             ++swaps;       
         }
     }
-    return swaps; // acts as indicator where the zeros start
+    return swaps - 1; // acts as indicator where the zeros start
 }
 
 void quickSort(std::vector<std::vector<float>>& orderedVector, int startingPoint, int endingPoint)
