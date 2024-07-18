@@ -20,11 +20,11 @@ std::vector<std::vector<float>> operator*(std::vector<std::vector<float>>& first
 
     std::vector<std::vector<float>> result(m1, std::vector<float>(n2));
 
-    for (size_t i = 0; i < m1; i++) // row selection
+    for (size_t i = 0; i < m1; ++i) // row selection
     {
-        for (size_t j = 0; j < n2; j++) // column selection
+        for (size_t j = 0; j < n2; ++j) // column selection
         {
-            for (size_t k = 0; k < n1; k++) // sum over elements
+            for (size_t k = 0; k < n1; ++k) // sum over elements
             {
                 result[i][j] += firstMatrix[i][k] * secondMatrix[k][j];
             }
@@ -50,11 +50,11 @@ std::vector<std::vector<float>> multiplyMatrices(std::vector<std::vector<float>>
 
     std::vector<std::vector<float>> result(m1, std::vector<float>(n2));
 
-    for (size_t i = 0; i < m1; i++) // row selection
+    for (size_t i = 0; i < m1; ++i) // row selection
     {
-        for (size_t j = 0; j < n2; j++) // column selection
+        for (size_t j = 0; j < n2; ++j) // column selection
         {
-            for (size_t k = 0; k < n1; k++) // sum over elements
+            for (size_t k = 0; k < n1; ++k) // sum over elements
             {
                 result[i][j] += firstMatrix[i][k] * secondMatrix[k][j];
             }
@@ -79,9 +79,9 @@ std::vector<float> operator*(std::vector<std::vector<float>>& Matrix, std::vecto
 
     std::vector<float> result(m1);
 
-    for (size_t i = 0; i < m1; i++)
+    for (size_t i = 0; i < m1; ++i)
     {
-        for (size_t j = 0; j < n1; j++)
+        for (size_t j = 0; j < n1; ++j)
         {
             result[i] += Matrix[i][j] * Vector[j];
         }
@@ -105,9 +105,9 @@ std::vector<float> multiplyMatrixVector(std::vector<std::vector<float>>& Matrix,
 
     std::vector<float> result(m1);
 
-    for (size_t i = 0; i < m1; i++) 
+    for (size_t i = 0; i < m1; ++i) 
     {
-        for (size_t j = 0; j < n1; j++)
+        for (size_t j = 0; j < n1; ++j)
         {
             result[i] += Matrix[i][j] * Vector[j];
         }
@@ -143,7 +143,7 @@ void renSort(std::vector<std::vector<float>>& orderedVector) // --- randomize eq
         swapped = false;
         n--;
 
-        for (size_t i = 0; i < n; i++)
+        for (size_t i = 0; i < n; ++i)
         {
             if (orderedVector[1][i] < orderedVector[1][i + 1])
             {

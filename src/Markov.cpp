@@ -57,7 +57,7 @@ void Markov::updateMatrix(StringVector_T& UniqueWords, StringVector_T& AllWords)
     size_t eof = AllWords.size();
     int j, k;
 
-    for (size_t i = 1; i < eof; i++)
+    for (size_t i = 1; i < eof; ++i)
     {
         k = j; // previous node exit becomes focus
         j = findIndex(UniqueWords, AllWords[i]);
@@ -65,8 +65,8 @@ void Markov::updateMatrix(StringVector_T& UniqueWords, StringVector_T& AllWords)
         if (i == 1) // first word in file
             k = findIndex(UniqueWords, AllWords[0]);
 
-        m_Matrix[j][k]++;
-        m_normVector[k]++;
+        ++m_Matrix[j][k];
+        ++m_normVector[k];
 
         if (i == eof - 2) // prevents going out of bounds
         {
@@ -78,9 +78,9 @@ void Markov::updateMatrix(StringVector_T& UniqueWords, StringVector_T& AllWords)
 
 void Markov::normalizeMatrix(std::vector<std::vector<float>>& Matrix)
 {
-   for (size_t j = 0; j < Matrix[0].size(); j++)
+   for (size_t j = 0; j < Matrix[0].size(); ++j)
    {
-        for (size_t i = 0; i < Matrix.size(); i++)
+        for (size_t i = 0; i < Matrix.size(); ++i)
         {
            Matrix[i][j] = Matrix[i][j] / m_normVector[j];
         }
@@ -90,8 +90,12 @@ void Markov::normalizeMatrix(std::vector<std::vector<float>>& Matrix)
 void Markov::updateStateVector(StringVector_T& wordList, std::string& inputWord)
 {
     int i = findIndex(wordList, inputWord);
-    m_stateVector.resize(wordList.size());
-    m_stateVector[i] = float(1);
+    size_t n = wordList.size();
+    m_stateVector.resize(n);
+
+    for (size_t j = 0; j < n; ++j)
+        m_stateVector[j] = 0;
+    m_stateVector[i] = 1;
 }
 
 int Markov::findIndex(StringVector_T& listOfWords, std::string searchItem)
@@ -117,22 +121,20 @@ void Markov::predictWord(StringVector_T& UniqueWords)
     FloatMatrix_T probVec(2, std::vector<float>(n));
     float randomProbabilityValue = randProb();
     std::string wordPrediction;
-    size_t pos;
     float prob = 0;
-    float norm = 0;
+    size_t pos;
+    m_stateVector = m_Matrix * m_stateVector;
 
-    m_stateVector = multiplyMatrixVector(m_Matrix, m_stateVector);
-
-    for (size_t i = 0; i < n; i++)
+    for (size_t i = 0; i < n; ++i)
         probVec[0][i] = i;
 
     probVec[1] = m_stateVector;
     renSort(probVec);
 
-    for (size_t j = 0; j < n; j++)
+    for (size_t j = 0; j < n; ++j)
     {
         prob += probVec[1][j];
-        if (randomProbabilityValue < probVec[1][j])
+        if (randomProbabilityValue < prob)
         {
            wordPrediction = UniqueWords[probVec[0][j]];
            pos = j;
@@ -140,9 +142,6 @@ void Markov::predictWord(StringVector_T& UniqueWords)
         }
     }
     
-    for (auto elements : probVec[1])
-        norm += elements;
-
-    std::cout << "\"" << wordPrediction << "\" " << " at " << pos << " with norm: " << norm << "\n";
+    std::cout << "\"" << wordPrediction << "\" " << " @ " << pos << " with likelihood " << probVec[1][pos] << "\n";
 
 }
