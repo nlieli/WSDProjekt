@@ -1,5 +1,6 @@
 #include <string>
 #include <vector>
+#include <random>
 
 // order of operation matters! M1 * M2 represents the left side multiplication of M2 to M1 and M2 * M1 the right side multiplication of M2 to M1.
 
@@ -19,11 +20,11 @@ std::vector<std::vector<float>> operator*(std::vector<std::vector<float>>& first
 
     std::vector<std::vector<float>> result(m1, std::vector<float>(n2));
 
-    for (size_t i = 0; i < m1; i++) // row selection
+    for (size_t i = 0; i < m1; ++i) // row selection
     {
-        for (size_t j = 0; j < n2; j++) // column selection
+        for (size_t j = 0; j < n2; ++j) // column selection
         {
-            for (size_t k = 0; k < n1; k++) // sum over elements
+            for (size_t k = 0; k < n1; ++k) // sum over elements
             {
                 result[i][j] += firstMatrix[i][k] * secondMatrix[k][j];
             }
@@ -49,11 +50,11 @@ std::vector<std::vector<float>> multiplyMatrices(std::vector<std::vector<float>>
 
     std::vector<std::vector<float>> result(m1, std::vector<float>(n2));
 
-    for (size_t i = 0; i < m1; i++) // row selection
+    for (size_t i = 0; i < m1; ++i) // row selection
     {
-        for (size_t j = 0; j < n2; j++) // column selection
+        for (size_t j = 0; j < n2; ++j) // column selection
         {
-            for (size_t k = 0; k < n1; k++) // sum over elements
+            for (size_t k = 0; k < n1; ++k) // sum over elements
             {
                 result[i][j] += firstMatrix[i][k] * secondMatrix[k][j];
             }
@@ -78,9 +79,9 @@ std::vector<float> operator*(std::vector<std::vector<float>>& Matrix, std::vecto
 
     std::vector<float> result(m1);
 
-    for (size_t i = 0; i < m1; i++)
+    for (size_t i = 0; i < m1; ++i)
     {
-        for (size_t j = 0; j < n1; j++)
+        for (size_t j = 0; j < n1; ++j)
         {
             result[i] += Matrix[i][j] * Vector[j];
         }
@@ -104,9 +105,9 @@ std::vector<float> multiplyMatrixVector(std::vector<std::vector<float>>& Matrix,
 
     std::vector<float> result(m1);
 
-    for (size_t i = 0; i < m1; i++) 
+    for (size_t i = 0; i < m1; ++i) 
     {
-        for (size_t j = 0; j < n1; j++)
+        for (size_t j = 0; j < n1; ++j)
         {
             result[i] += Matrix[i][j] * Vector[j];
         }
@@ -114,3 +115,49 @@ std::vector<float> multiplyMatrixVector(std::vector<std::vector<float>>& Matrix,
 
     return result;
 }
+
+bool randBool()
+{
+    bool randomBool;
+    std::random_device rd;
+    std::uniform_int_distribution<> dist(0, 1);
+    randomBool = dist(rd);
+    return randomBool;
+}
+
+float randProb()
+{
+    float randomProbability;
+    std::random_device rd;
+    std::uniform_real_distribution<float> dist(0, 1);
+    randomProbability = dist(rd);
+    return randomProbability;
+}
+
+void renSort(std::vector<std::vector<float>>& orderedVector) // --- randomize equal numbers sort
+{
+    size_t n = orderedVector[0].size();
+    bool swapped;
+
+    do { // --- modified bubblesort algorithm
+        swapped = false;
+        n--;
+
+        for (size_t i = 0; i < n; ++i)
+        {
+            if (orderedVector[1][i] < orderedVector[1][i + 1])
+            {
+                swapped = true;
+                std::swap(orderedVector[0][i], orderedVector[0][i + 1]);
+                std::swap(orderedVector[1][i], orderedVector[1][i + 1]);
+            }
+            else if ((orderedVector[1][i] == orderedVector[1][i + 1]) && randBool())
+            {
+                std::swap(orderedVector[0][i], orderedVector[0][i + 1]);
+                std::swap(orderedVector[1][i], orderedVector[1][i + 1]);
+            }
+        }
+
+    } while (swapped);
+}
+

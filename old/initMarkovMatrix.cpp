@@ -1,7 +1,7 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
-#include "Markov.h"
+#include "MarkovClass.h"
 #include <vector>
 #include <algorithm>
 
@@ -90,6 +90,14 @@ void MarkovMatrix::normalizeMatrix(std::vector<std::vector<float>>& Matrix, std:
            Matrix[i][j] = Matrix[i][j] / Vector[i];
         }
    } 
+}
+
+std::vector<float> MarkovMatrix::initStateVector(std::string& inputWord)
+{
+    int i = findIndex(uniqueWordList, inputWord);
+    std::vector<float> stateVector(uniqueWordList.size());
+    stateVector[i] = 1;
+    return stateVector;
 }
 
 // --- Miscellaneous function
