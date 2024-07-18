@@ -1,6 +1,7 @@
 #include <string>
 #include <vector>
 #include <random>
+#include <Math.h>
 
 // order of operation matters! M1 * M2 represents the left side multiplication of M2 to M1 and M2 * M1 the right side multiplication of M2 to M1.
 
@@ -151,7 +152,8 @@ void renSort(std::vector<std::vector<float>>& orderedVector) // --- randomize eq
                 std::swap(orderedVector[0][i], orderedVector[0][i + 1]);
                 std::swap(orderedVector[1][i], orderedVector[1][i + 1]);
             }
-            else if ((orderedVector[1][i] == orderedVector[1][i + 1]) && randBool())
+            else if ((orderedVector[1][i] == orderedVector[1][i + 1]) && randBool() && (orderedVector[1][i] != 0))
+
             {
                 std::swap(orderedVector[0][i], orderedVector[0][i + 1]);
                 std::swap(orderedVector[1][i], orderedVector[1][i + 1]);
@@ -161,3 +163,51 @@ void renSort(std::vector<std::vector<float>>& orderedVector) // --- randomize eq
     } while (swapped);
 }
 
+int preSort(std::vector<std::vector<float>>& orderedVector) // puts all non-zero values to the front of the vector (zero values are irrelevant for probability)
+{
+    size_t n = orderedVector.size();
+    int swaps = 0;
+
+    for (size_t i = 0; i < n; ++i)
+    {
+        if (orderedVector[1][i] > 0)
+        {
+            std::swap(orderedVector[0][i], orderedVector[0][swaps]);
+            std::swap(orderedVector[1][i], orderedVector[1][swaps]);
+            ++swaps;       
+        }
+    }
+    return swaps; // acts as indicator where the zeros start
+}
+
+void quickSort(std::vector<std::vector<float>>& orderedVector, int startingPoint, int endingPoint)
+{
+    if (startingPoint <= endingPoint)
+        return;
+
+    int pivot = partition(orderedVector, startingPoint, endingPoint);
+    quickSort(orderedVector, startingPoint, pivot - 1);
+    quickSort(orderedVector, pivot + 1, endingPoint);
+
+}
+
+int partition(std::vector<std::vector<float>>& orderedVector, int startingPoint, int endingPoint) 
+ {
+    int pivot = orderedVector[1][endingPoint];
+    int i = startingPoint - 1;
+
+    for (int j = startingPoint; j <= endingPoint - 1; ++j)
+    {
+        if (orderedVector[1][j] < pivot)
+        {
+            ++i;
+            std::swap(orderedVector[1][j], orderedVector[1][i]);
+            std::swap(orderedVector[0][j], orderedVector[0][i]);
+        }
+    }
+    ++i;
+    std::swap(orderedVector[1][endingPoint], orderedVector[1][i]);
+    std::swap(orderedVector[0][endingPoint], orderedVector[0][i]);
+
+    return i;
+ }

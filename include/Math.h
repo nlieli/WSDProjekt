@@ -32,3 +32,9 @@ void renSort(std::vector<std::vector<float>>& orderedVector);
 bool randBool();
  
 float randProb();
+
+int preSort(std::vector<std::vector<float>>& orderedVector);
+
+void quickSort(std::vector<std::vector<float>>& orderedVector, int startingPoint, int endingPoint);
+
+int partition(std::vector<std::vector<float>>& orderedVector, int startingPoint, int endingPoint); 

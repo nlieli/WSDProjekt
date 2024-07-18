@@ -54,7 +54,7 @@ void FileTokenizer::findUniqueWords()
 
 void Markov::updateMatrix(StringVector_T& UniqueWords, StringVector_T& AllWords)
 {
-    std::cout << "creating Matrix...";
+    std::cout << "Creating Matrix...";
     size_t n = UniqueWords.size();
     m_Matrix.resize(n, std::vector<float>(n));
     m_normVector.resize(n);
@@ -83,7 +83,7 @@ void Markov::updateMatrix(StringVector_T& UniqueWords, StringVector_T& AllWords)
 
 void Markov::normalizeMatrix(std::vector<std::vector<float>>& Matrix)
 {
-   std::cout << "\nNormalizing Matrix...";
+   std::cout << " Done!" << "\nNormalizing Matrix...";
    size_t n_col = Matrix[0].size();
    size_t n_row = Matrix.size();
    for (size_t j = 0; j < n_col; ++j)
@@ -138,8 +138,12 @@ void Markov::predictWord(StringVector_T& UniqueWords)
         probVec[0][i] = i;
 
     probVec[1] = m_stateVector;
-    renSort(probVec);
+    std::cout << "Sorting vector...";
+    // renSort(probVec);
+    int sortRange = preSort(probVec);
+    quickSort(probVec, 0, sortRange);
 
+    std::cout << " Done!" << std::endl;
     for (size_t j = 0; j < n; ++j)
     {
         prob += probVec[1][j];
