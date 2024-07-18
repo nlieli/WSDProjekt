@@ -18,7 +18,7 @@ void FileTokenizer::loadFile(const char* fileName)
     std::ifstream txtFileStream;
     std::stringstream ss;
     txtFileStream.open(fileName);
-
+    std::cout << "Loading file contents...";
     if (txtFileStream.fail())
     {
         std::cerr << "[ERROR]: Could not open file. Check file name/directory\n";
@@ -33,12 +33,15 @@ void FileTokenizer::loadFile(const char* fileName)
         }
 
         txtFileStream.close();
+
         m_totalCount = m_fullWordList.size();
+        std::cout << " Done!" << std::endl;
     }
 }
 
 void FileTokenizer::findUniqueWords()
 {
+    std::cout << "Finding unique words...";
     m_uniqueWordList = m_fullWordList;
     sort(m_uniqueWordList.begin(), m_uniqueWordList.end());
 
@@ -46,10 +49,12 @@ void FileTokenizer::findUniqueWords()
     it = std::unique(m_uniqueWordList.begin(), m_uniqueWordList.end()); // removes all but first element of every CONSECUTIVE group - also puts iterator at new past-the-end element 
     m_uniqueWordList.resize(distance(m_uniqueWordList.begin(), it)); // shortens the vector from beginning to new past-the-end flag element provided by iterator
     m_uniqueCount = m_uniqueWordList.size();
+    std::cout << " Done!" << std::endl;
 }
 
 void Markov::updateMatrix(StringVector_T& UniqueWords, StringVector_T& AllWords)
 {
+    std::cout << "creating Matrix...";
     size_t n = UniqueWords.size();
     m_Matrix.resize(n, std::vector<float>(n));
     m_normVector.resize(n);
@@ -67,7 +72,7 @@ void Markov::updateMatrix(StringVector_T& UniqueWords, StringVector_T& AllWords)
 
         ++m_Matrix[j][k];
         ++m_normVector[k];
-
+        
         if (i == eof - 2) // prevents going out of bounds
         {
             normalizeMatrix(m_Matrix);
@@ -78,13 +83,17 @@ void Markov::updateMatrix(StringVector_T& UniqueWords, StringVector_T& AllWords)
 
 void Markov::normalizeMatrix(std::vector<std::vector<float>>& Matrix)
 {
-   for (size_t j = 0; j < Matrix[0].size(); ++j)
+   std::cout << "\nNormalizing Matrix...";
+   size_t n_col = Matrix[0].size();
+   size_t n_row = Matrix.size();
+   for (size_t j = 0; j < n_col; ++j)
    {
-        for (size_t i = 0; i < Matrix.size(); ++i)
+        for (size_t i = 0; i < n_row; ++i)
         {
-           Matrix[i][j] = Matrix[i][j] / m_normVector[j];
+           Matrix[i][j] /= m_normVector[j];
         }
    } 
+   std::cout << " Done!" << std::endl;
 } 
 
 void Markov::updateStateVector(StringVector_T& wordList, std::string& inputWord)

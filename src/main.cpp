@@ -7,7 +7,7 @@ int main()
     FileTokenizer FT;
     Markov Mv;
 
-    FT.loadFile("../data/english/english_random_topic.txt");
+    FT.loadFile("../data/english/pg4200.txt");
     FT.findUniqueWords();
 
     Mv.updateMatrix(FT.m_uniqueWordList, FT.m_fullWordList);
