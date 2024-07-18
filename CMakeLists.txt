@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.5.0)
 project(WSD VERSION 0.1.0 LANGUAGES C CXX)
 
 add_executable(WSD src/Markov.cpp src/main.cpp src/math.cpp) #main project
-# add_executable(WSD src/test.cpp) #testing file
+# add_executable(WSD src/math.cpp src/test.cpp) #testing file
 
 include_directories(include)
 

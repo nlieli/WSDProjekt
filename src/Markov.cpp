@@ -59,14 +59,14 @@ void Markov::updateMatrix(StringVector_T& UniqueWords, StringVector_T& AllWords)
 
     for (size_t i = 1; i < eof; i++)
     {
-        j = k; // previous node exit becomes focus
-        k = findIndex(UniqueWords, AllWords[i]);
+        k = j; // previous node exit becomes focus
+        j = findIndex(UniqueWords, AllWords[i]);
 
         if (i == 1) // first word in file
-            j = findIndex(UniqueWords, AllWords[0]);
+            k = findIndex(UniqueWords, AllWords[0]);
 
         m_Matrix[j][k]++;
-        m_normVector[j]++;
+        m_normVector[k]++;
 
         if (i == eof - 2) // prevents going out of bounds
         {
@@ -82,7 +82,7 @@ void Markov::normalizeMatrix(std::vector<std::vector<float>>& Matrix)
    {
         for (size_t i = 0; i < Matrix.size(); i++)
         {
-           Matrix[i][j] = Matrix[i][j] / m_normVector[i];
+           Matrix[i][j] = Matrix[i][j] / m_normVector[j];
         }
    } 
 } 
@@ -91,7 +91,7 @@ void Markov::updateStateVector(StringVector_T& wordList, std::string& inputWord)
 {
     int i = findIndex(wordList, inputWord);
     m_stateVector.resize(wordList.size());
-    m_stateVector[i] = 1;
+    m_stateVector[i] = float(1);
 }
 
 int Markov::findIndex(StringVector_T& listOfWords, std::string searchItem)
@@ -117,8 +117,11 @@ void Markov::predictWord(StringVector_T& UniqueWords)
     FloatMatrix_T probVec(2, std::vector<float>(n));
     float randomProbabilityValue = randProb();
     std::string wordPrediction;
+    size_t pos;
+    float prob = 0;
+    float norm = 0;
 
-    m_stateVector = m_Matrix * m_stateVector;
+    m_stateVector = multiplyMatrixVector(m_Matrix, m_stateVector);
 
     for (size_t i = 0; i < n; i++)
         probVec[0][i] = i;
@@ -128,13 +131,18 @@ void Markov::predictWord(StringVector_T& UniqueWords)
 
     for (size_t j = 0; j < n; j++)
     {
+        prob += probVec[1][j];
         if (randomProbabilityValue < probVec[1][j])
         {
            wordPrediction = UniqueWords[probVec[0][j]];
+           pos = j;
            break;
         }
     }
+    
+    for (auto elements : probVec[1])
+        norm += elements;
 
-    std::cout << wordPrediction << "\n";
+    std::cout << "\"" << wordPrediction << "\" " << " at " << pos << " with norm: " << norm << "\n";
 
 }

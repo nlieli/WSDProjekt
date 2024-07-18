@@ -145,7 +145,7 @@ void renSort(std::vector<std::vector<float>>& orderedVector) // --- randomize eq
 
         for (size_t i = 0; i < n; i++)
         {
-            if (orderedVector[1][i] > orderedVector[1][i + 1])
+            if (orderedVector[1][i] < orderedVector[1][i + 1])
             {
                 swapped = true;
                 std::swap(orderedVector[0][i], orderedVector[0][i + 1]);
