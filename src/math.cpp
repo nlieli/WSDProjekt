@@ -179,7 +179,7 @@ int preSort(std::vector<std::vector<float>>& orderedVector) // puts all non-zero
     return swaps - 1; // acts as indicator where the zeros start
 }
 
-void quickSort(std::vector<std::vector<float>>& orderedVector, int startingPoint, int endingPoint)
+void quickSort(std::vector<std::vector<float>>& orderedVector, int startingPoint, int endingPoint) // no need to randomize equal numbers since quickSort is unstable already
 {
     if (startingPoint >= endingPoint)
         return;
@@ -192,7 +192,7 @@ void quickSort(std::vector<std::vector<float>>& orderedVector, int startingPoint
 
 int partition(std::vector<std::vector<float>>& orderedVector, int startingPoint, int endingPoint) 
  {
-    int pivot = orderedVector[1][startingPoint];
+    float pivot = orderedVector[1][startingPoint];
     int i = startingPoint;
 
     for (int j = startingPoint + 1; j <= endingPoint; ++j)

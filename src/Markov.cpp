@@ -140,10 +140,8 @@ void Markov::predictWord(StringVector_T& UniqueWords)
 
     probVec[1] = m_stateVector;
     std::cout << "Sorting vector...";
-    // renSort(probVec);
     int sortRange = preSort(probVec);
-    // renSort(probVec, 0, sortRange);
-    quickSort(probVec, 0, sortRange); // doesnt work atm
+    quickSort(probVec, 0, sortRange); 
 
     std::cout << " Done!" << std::endl;
     for (size_t j = 0; j < n; ++j)
