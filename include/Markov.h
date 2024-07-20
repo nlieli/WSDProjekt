@@ -1,4 +1,5 @@
 #include <iostream>
+#include <chrono>
 #include <sstream>
 #include <fstream>
 #include <vector>
@@ -50,3 +51,12 @@ private:
 
 // --- Miscellaneous functions
 
+struct Timer
+{
+    std::chrono::high_resolution_clock::time_point start, end;
+    std::chrono::duration<float> duration;
+
+    Timer();
+
+    ~Timer();
+};

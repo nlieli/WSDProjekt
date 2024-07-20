@@ -27,7 +27,7 @@ If random_number is smaller than that value, which comes from an ordered list of
 corresponding word is selected as the suggestion
 */
 
-void renSort(std::vector<std::vector<float>>& orderedVector);
+void renSort(std::vector<std::vector<float>>& orderedVector, size_t startingPoint, size_t endingPoint);
 
 bool randBool();
  

@@ -135,28 +135,27 @@ float randProb()
     return randomProbability;
 }
 
-void renSort(std::vector<std::vector<float>>& orderedVector) // --- randomize equal numbers sort
+void renSort(std::vector<std::vector<float>>& orderedVector, size_t startingPoint, size_t endingPoint) // --- randomize equal numbers sort
 {
-    size_t n = orderedVector[0].size();
     bool swapped;
 
     do { // --- modified bubblesort algorithm
-        swapped = false;
-        n--;
+        swapped = false;    
+        endingPoint--;
 
-        for (size_t i = 0; i < n; ++i)
+        for (startingPoint; startingPoint < endingPoint; ++startingPoint)
         {
-            if (orderedVector[1][i] < orderedVector[1][i + 1])
+            if (orderedVector[1][startingPoint] < orderedVector[1][startingPoint + 1])
             {
                 swapped = true;
-                std::swap(orderedVector[0][i], orderedVector[0][i + 1]);
-                std::swap(orderedVector[1][i], orderedVector[1][i + 1]);
+                std::swap(orderedVector[0][startingPoint], orderedVector[0][startingPoint + 1]);
+                std::swap(orderedVector[1][startingPoint], orderedVector[1][startingPoint + 1]);
             }
-            else if ((orderedVector[1][i] == orderedVector[1][i + 1]) && randBool() && (orderedVector[1][i] != 0))
+            else if ((orderedVector[1][startingPoint] == orderedVector[1][startingPoint + 1]) && randBool())
 
             {
-                std::swap(orderedVector[0][i], orderedVector[0][i + 1]);
-                std::swap(orderedVector[1][i], orderedVector[1][i + 1]);
+                std::swap(orderedVector[0][startingPoint], orderedVector[0][startingPoint + 1]);
+                std::swap(orderedVector[1][startingPoint], orderedVector[1][startingPoint + 1]);
             }
         }
 
@@ -182,7 +181,7 @@ int preSort(std::vector<std::vector<float>>& orderedVector) // puts all non-zero
 
 void quickSort(std::vector<std::vector<float>>& orderedVector, int startingPoint, int endingPoint)
 {
-    if (startingPoint <= endingPoint)
+    if (startingPoint >= endingPoint)
         return;
 
     int pivot = partition(orderedVector, startingPoint, endingPoint);
@@ -193,21 +192,20 @@ void quickSort(std::vector<std::vector<float>>& orderedVector, int startingPoint
 
 int partition(std::vector<std::vector<float>>& orderedVector, int startingPoint, int endingPoint) 
  {
-    int pivot = orderedVector[1][endingPoint];
-    int i = startingPoint - 1;
+    int pivot = orderedVector[1][startingPoint];
+    int i = startingPoint;
 
-    for (int j = startingPoint; j <= endingPoint - 1; ++j)
+    for (int j = startingPoint + 1; j <= endingPoint; ++j)
     {
-        if (orderedVector[1][j] < pivot)
+        if (orderedVector[1][j] > pivot)
         {
             ++i;
             std::swap(orderedVector[1][j], orderedVector[1][i]);
             std::swap(orderedVector[0][j], orderedVector[0][i]);
         }
     }
-    ++i;
-    std::swap(orderedVector[1][endingPoint], orderedVector[1][i]);
-    std::swap(orderedVector[0][endingPoint], orderedVector[0][i]);
+    std::swap(orderedVector[1][startingPoint], orderedVector[1][i]);
+    std::swap(orderedVector[0][startingPoint], orderedVector[0][i]);
 
     return i;
  }

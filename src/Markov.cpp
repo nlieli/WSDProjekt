@@ -22,7 +22,7 @@ void FileTokenizer::loadFile(const char* fileName)
     if (txtFileStream.fail())
     {
         std::cerr << "[ERROR]: Could not open file. Check file name/directory\n";
-        throw 2; 
+        throw 2;
     }
     else
     {
@@ -54,6 +54,7 @@ void FileTokenizer::findUniqueWords()
 
 void Markov::updateMatrix(StringVector_T& UniqueWords, StringVector_T& AllWords)
 {
+    Timer timer;
     std::cout << "Creating Matrix...";
     size_t n = UniqueWords.size();
     m_Matrix.resize(n, std::vector<float>(n));
@@ -62,39 +63,39 @@ void Markov::updateMatrix(StringVector_T& UniqueWords, StringVector_T& AllWords)
     size_t eof = AllWords.size();
     int j, k;
 
+    k = findIndex(UniqueWords, AllWords[0]);
+
     for (size_t i = 1; i < eof; ++i)
     {
-        k = j; // previous node exit becomes focus
         j = findIndex(UniqueWords, AllWords[i]);
-
-        if (i == 1) // first word in file
-            k = findIndex(UniqueWords, AllWords[0]);
 
         ++m_Matrix[j][k];
         ++m_normVector[k];
-        
+        k = j; // previous node exit becomes focus
+
         if (i == eof - 2) // prevents going out of bounds
         {
             normalizeMatrix(m_Matrix);
             return;
         }
     }
-}    
+}
 
 void Markov::normalizeMatrix(std::vector<std::vector<float>>& Matrix)
 {
-   std::cout << " Done!" << "\nNormalizing Matrix...";
-   size_t n_col = Matrix[0].size();
-   size_t n_row = Matrix.size();
-   for (size_t j = 0; j < n_col; ++j)
-   {
+    Timer timer;
+    std::cout << " Done!" << "\nNormalizing Matrix...";
+    size_t n_col = Matrix[0].size();
+    size_t n_row = Matrix.size();
+    for (size_t j = 0; j < n_col; ++j)
+    {
         for (size_t i = 0; i < n_row; ++i)
         {
-           Matrix[i][j] /= m_normVector[j];
+            Matrix[i][j] /= m_normVector[j];
         }
-   } 
-   std::cout << " Done!" << std::endl;
-} 
+    }
+    std::cout << " Done!" << std::endl;
+}
 
 void Markov::updateStateVector(StringVector_T& wordList, std::string& inputWord)
 {
@@ -141,6 +142,7 @@ void Markov::predictWord(StringVector_T& UniqueWords)
     std::cout << "Sorting vector...";
     // renSort(probVec);
     int sortRange = preSort(probVec);
+    // renSort(probVec, 0, sortRange);
     quickSort(probVec, 0, sortRange); // doesnt work atm
 
     std::cout << " Done!" << std::endl;
@@ -149,12 +151,28 @@ void Markov::predictWord(StringVector_T& UniqueWords)
         prob += probVec[1][j];
         if (randomProbabilityValue < prob)
         {
-           wordPrediction = UniqueWords[probVec[0][j]];
-           pos = j;
-           break;
+            wordPrediction = UniqueWords[probVec[0][j]];
+            pos = j;
+            break;
         }
     }
-    
+
     std::cout << "\"" << wordPrediction << "\" " << " @ " << pos << " with likelihood " << probVec[1][pos] << "\n";
 
+}
+
+// --- Misc functions
+
+Timer::Timer()
+{
+    start = std::chrono::high_resolution_clock::now();
+}
+
+Timer::~Timer()
+{
+    end = std::chrono::high_resolution_clock::now();
+    duration = end - start;
+
+    float ms = duration.count() * 999.0f;
+    std::cout << "  execution time: " << ms << " ms" << std::endl;
 }
