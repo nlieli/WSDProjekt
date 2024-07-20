@@ -8,17 +8,16 @@ int main()
     FileTokenizer FT;
     Markov Mv;
 
-    FT.loadFile("../data/english/pg100.txt");
-    FT.findUniqueWords();
+    FT.loadFile("../data/english/pg4200.txt");
 
-    Mv.updateMatrix(FT.m_uniqueWordList, FT.m_fullWordList);
+    Mv.updateMatrix(FT.m_uniqueWordMap, FT.m_fullWordList);
 
     // for (;;)
     // {
         // std::cin >> currentWord;
         currentWord = "here";
-        Mv.updateStateVector(FT.m_uniqueWordList, currentWord);
-        Mv.predictWord(FT.m_uniqueWordList);
+        Mv.updateStateVector(FT.m_uniqueWordMap, currentWord);
+        Mv.predictWord(FT.m_reverseUniqueMap);
     // }
     // return 0;
 }

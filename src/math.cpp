@@ -2,6 +2,7 @@
 #include <vector>
 #include <random>
 #include <Math.h>
+#include <iostream>
 
 // order of operation matters! M1 * M2 represents the left side multiplication of M2 to M1 and M2 * M1 the right side multiplication of M2 to M1.
 
@@ -23,9 +24,9 @@ std::vector<std::vector<float>> operator*(std::vector<std::vector<float>>& first
 
     for (size_t i = 0; i < m1; ++i) // row selection
     {
-        for (size_t j = 0; j < n2; ++j) // column selection
+        for (size_t k = 0; k < n1; ++k) // sum over elements
         {
-            for (size_t k = 0; k < n1; ++k) // sum over elements
+            for (size_t j = 0; j < n2; ++j) // column selection
             {
                 result[i][j] += firstMatrix[i][k] * secondMatrix[k][j];
             }
@@ -53,9 +54,9 @@ std::vector<std::vector<float>> multiplyMatrices(std::vector<std::vector<float>>
 
     for (size_t i = 0; i < m1; ++i) // row selection
     {
-        for (size_t j = 0; j < n2; ++j) // column selection
+        for (size_t k = 0; k < n1; ++k) // sum over elements
         {
-            for (size_t k = 0; k < n1; ++k) // sum over elements
+            for (size_t j = 0; j < n2; ++j) // column selection
             {
                 result[i][j] += firstMatrix[i][k] * secondMatrix[k][j];
             }

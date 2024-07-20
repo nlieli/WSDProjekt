@@ -14,6 +14,7 @@ using IntVector_T = std::vector<int>;
 
 void FileTokenizer::loadFile(const char* fileName)
 {
+    Timer timer;
     std::string word;
     std::ifstream txtFileStream;
     std::stringstream ss;
@@ -26,33 +27,46 @@ void FileTokenizer::loadFile(const char* fileName)
     }
     else
     {
+        int i = 0;
         ss << txtFileStream.rdbuf(); // store entire inputbuffer in the new stringstream object
-        while (std::getline(ss, word, ' ')) // ' ' is the delimiter, word is a variable that takes each tokenized input as definition 
+        while (ss >> word) // ' ' is the delimiter, word is a variable that takes each tokenized input as definition 
         {
             m_fullWordList.push_back(word); // push_back creates new line in the vector and adds the token stored in word to the bottom    
+            if (!m_uniqueWordMap.contains(word))
+            {
+                m_uniqueWordMap[word] = i;
+                ++i;
+            }
         }
 
         txtFileStream.close();
 
         m_totalCount = m_fullWordList.size();
+        m_uniqueCount = m_uniqueWordMap.size();
+
+        for (auto& element : m_uniqueWordMap)
+            m_reverseUniqueMap[element.second] = element.first;
+        
         std::cout << " Done!" << std::endl;
     }
 }
 
+/*
 void FileTokenizer::findUniqueWords()
 {
+    Timer timer;
     std::cout << "Finding unique words...";
-    m_uniqueWordList = m_fullWordList;
-    sort(m_uniqueWordList.begin(), m_uniqueWordList.end());
+    m_uniqueWordMap = m_fullWordList;
+    sort(m_uniqueWordMap.begin(), m_uniqueWordMap.end());
 
     StringVector_T::iterator it;
-    it = std::unique(m_uniqueWordList.begin(), m_uniqueWordList.end()); // removes all but first element of every CONSECUTIVE group - also puts iterator at new past-the-end element 
-    m_uniqueWordList.resize(distance(m_uniqueWordList.begin(), it)); // shortens the vector from beginning to new past-the-end flag element provided by iterator
-    m_uniqueCount = m_uniqueWordList.size();
+    it = std::unique(m_uniqueWordMap.begin(), m_uniqueWordMap.end()); // removes all but first element of every CONSECUTIVE group - also puts iterator at new past-the-end element 
+    m_uniqueWordMap.resize(distance(m_uniqueWordMap.begin(), it)); // shortens the vector from beginning to new past-the-end flag element provided by iterator
+    m_uniqueCount = m_uniqueWordMap.size();
     std::cout << " Done!" << std::endl;
 }
-
-void Markov::updateMatrix(StringVector_T& UniqueWords, StringVector_T& AllWords)
+*/
+void Markov::updateMatrix(std::unordered_map<std::string, int>& UniqueWords, StringVector_T& AllWords)
 {
     Timer timer;
     std::cout << "Creating Matrix...";
@@ -63,17 +77,17 @@ void Markov::updateMatrix(StringVector_T& UniqueWords, StringVector_T& AllWords)
     size_t eof = AllWords.size();
     int j, k;
 
-    k = findIndex(UniqueWords, AllWords[0]);
+    k = UniqueWords[AllWords[0]];
 
-    for (size_t i = 1; i < eof; ++i)
+    for (size_t i = 1; i < eof; ++i) 
     {
-        j = findIndex(UniqueWords, AllWords[i]);
+        j = UniqueWords[AllWords[i]];
 
         ++m_Matrix[j][k];
         ++m_normVector[k];
         k = j; // previous node exit becomes focus
 
-        if (i == eof - 2) // prevents going out of bounds
+        if (i == eof - 1) // prevents going out of bounds
         {
             normalizeMatrix(m_Matrix);
             return;
@@ -87,27 +101,29 @@ void Markov::normalizeMatrix(std::vector<std::vector<float>>& Matrix)
     std::cout << " Done!" << "\nNormalizing Matrix...";
     size_t n_col = Matrix[0].size();
     size_t n_row = Matrix.size();
-    for (size_t j = 0; j < n_col; ++j)
+    for (size_t i = 0; i < n_row; ++i)
     {
-        for (size_t i = 0; i < n_row; ++i)
+        for (size_t j = 0; j < n_col; ++j)
         {
-            Matrix[i][j] /= m_normVector[j];
+            if (m_normVector[j] > 0)
+                Matrix[i][j] /= m_normVector[j];
         }
     }
     std::cout << " Done!" << std::endl;
 }
 
-void Markov::updateStateVector(StringVector_T& wordList, std::string& inputWord)
+void Markov::updateStateVector(std::unordered_map<std::string, int>& wordList, std::string& inputWord)
 {
-    int i = findIndex(wordList, inputWord);
+    int i = wordList[inputWord];
     size_t n = wordList.size();
     m_stateVector.resize(n);
 
-    for (size_t j = 0; j < n; ++j)
+    for (size_t j = 0; j < n; ++j) // skip this loop on first call
         m_stateVector[j] = 0;
     m_stateVector[i] = 1;
 }
 
+/*
 int Markov::findIndex(StringVector_T& listOfWords, std::string searchItem)
 {
     int index;
@@ -124,8 +140,8 @@ int Markov::findIndex(StringVector_T& listOfWords, std::string searchItem)
     }
     return index;
 }
-
-void Markov::predictWord(StringVector_T& UniqueWords)
+*/
+void Markov::predictWord(std::unordered_map<int, std::string>& UniqueWords)
 {
     size_t n = m_stateVector.size();
     FloatMatrix_T probVec(2, std::vector<float>(n));

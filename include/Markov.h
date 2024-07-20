@@ -3,6 +3,7 @@
 #include <sstream>
 #include <fstream>
 #include <vector>
+#include <unordered_map>
 #include <algorithm>
 
 /* 
@@ -16,7 +17,8 @@ struct FileTokenizer
 {
     // --- properties
     std::vector<std::string> m_fullWordList;
-    std::vector<std::string> m_uniqueWordList;
+    std::unordered_map<std::string, int> m_uniqueWordMap;
+    std::unordered_map<int, std::string> m_reverseUniqueMap;
     size_t m_totalCount;
     size_t m_uniqueCount;
 
@@ -39,10 +41,10 @@ private:
     std::vector<int> m_normVector;
     // --- methods
 public:
-    void updateMatrix(std::vector<std::string>& UniqueWords,
+    void updateMatrix(std::unordered_map<std::string, int>& UniqueWords,
         std::vector<std::string>& AllWords);
-    void updateStateVector(std::vector<std::string>& wordList, std::string& inputWord);
-    void predictWord(std::vector<std::string>& UniqueWords);
+    void updateStateVector(std::unordered_map<std::string, int> & wordList, std::string& inputWord);
+    void predictWord(std::unordered_map<int, std::string>& UniqueWords);
 
 private:
     void normalizeMatrix(std::vector<std::vector<float>>& Matrix);
