@@ -3,6 +3,9 @@
 #include <random>
 #include <Math.h>
 #include <iostream>
+#include <thread>
+#include <future>
+#include "Markov.h"
 
 // order of operation matters! M1 * M2 represents the left side multiplication of M2 to M1 and M2 * M1 the right side multiplication of M2 to M1.
 
@@ -95,7 +98,7 @@ std::vector<float> operator*(std::vector<std::vector<float>>& Matrix, std::vecto
     return result;
 }
 
-std::vector<float> multiplyMatrixVector(std::vector<std::vector<float>>& Matrix, std::vector<float>& Vector) // Matrix - Vector multiplication
+std::vector<float> multiplyMatrixVector(const std::vector<std::vector<float>>& Matrix, const std::vector<float>& Vector) // Matrix - Vector multiplication
 {
     size_t m1, n1;
     size_t m2, n2;
@@ -111,7 +114,7 @@ std::vector<float> multiplyMatrixVector(std::vector<std::vector<float>>& Matrix,
 
     std::vector<float> result(m1);
 
-    for (size_t i = 0; i < m1; ++i) 
+    for (size_t i = 0; i < m1; ++i)
     {
         for (size_t j = 0; j < n1; ++j)
         {
@@ -153,13 +156,13 @@ int preSort(std::vector<std::vector<float>>& orderedVector) // puts all non-zero
         {
             std::swap(orderedVector[0][i], orderedVector[0][swaps]);
             std::swap(orderedVector[1][i], orderedVector[1][swaps]);
-            ++swaps;       
+            ++swaps;
         }
     }
     return swaps - 1; // acts as indicator where the zeros start
 }
 
-void quickSort(std::vector<std::vector<float>>& orderedVector, int startingPoint, int endingPoint) 
+void quickSort(std::vector<std::vector<float>>& orderedVector, int startingPoint, int endingPoint)
 {
     if (startingPoint >= endingPoint)
         return;
@@ -170,8 +173,8 @@ void quickSort(std::vector<std::vector<float>>& orderedVector, int startingPoint
 
 }
 
-int partition(std::vector<std::vector<float>>& orderedVector, int startingPoint, int endingPoint) 
- {
+int partition(std::vector<std::vector<float>>& orderedVector, int startingPoint, int endingPoint)
+{
     float pivot = orderedVector[1][startingPoint];
     int i = startingPoint;
 
@@ -188,4 +191,21 @@ int partition(std::vector<std::vector<float>>& orderedVector, int startingPoint,
     std::swap(orderedVector[0][startingPoint], orderedVector[0][i]);
 
     return i;
- }
+}
+
+std::vector<float> mtMm(std::vector<std::vector<float>>& Matrix, std::vector<float>& Vector) //multi-thread Matrix multiplication
+{
+    size_t n = Matrix.size();
+    size_t w1 = floor(n / 2);
+
+    std::vector<std::vector<float>> M1(Matrix.begin(), Matrix.begin() + w1);
+    std::vector<std::vector<float>> M2(Matrix.begin() + w1, Matrix.end());
+    auto multiplyMatrixVectorPtr = static_cast<std::vector<float>(*)(const std::vector<std::vector<float>>&, const std::vector<float>&)>(&multiplyMatrixVector);
+    Timer timer;
+    std::future<std::vector<float>> fu = std::async(std::launch::async, multiplyMatrixVectorPtr, std::cref(M1), std::cref(Vector));
+    std::vector<float> R2 = M2 * Vector;
+    std::vector<float> R1 = fu.get(); 
+
+    R1.insert(R1.end(), R2.begin(), R2.end());
+    return R1;
+}

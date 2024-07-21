@@ -23,3 +23,6 @@ int preSort(std::vector<std::vector<float>>& orderedVector);
 void quickSort(std::vector<std::vector<float>>& orderedVector, int startingPoint, int endingPoint);
 
 int partition(std::vector<std::vector<float>>& orderedVector, int startingPoint, int endingPoint); 
+
+std::vector<float> mtMm(std::vector<std::vector<float>>& Matrix, std::vector<float>& Vector);
+

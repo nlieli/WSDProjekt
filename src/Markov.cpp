@@ -117,7 +117,7 @@ void Markov::normMat()
         }
     }
 }
-
+/*
 void Markov::normalizeMatrix(std::vector<std::vector<float>>& Matrix)
 {
     Timer timer;
@@ -134,7 +134,7 @@ void Markov::normalizeMatrix(std::vector<std::vector<float>>& Matrix)
     }
     std::cout << " Done!" << std::endl;
 }
-
+*/
 void Markov::updateStateVector(std::unordered_map<std::string, int>& wordList, std::string& inputWord)
 {
     int i = wordList[inputWord];
@@ -177,6 +177,7 @@ void Markov::predictWord(std::unordered_map<int, std::string>& UniqueWords)
         std::cout << "Performing matrix multiplication...";
         Timer timer;
         m_stateVector = m_Matrix * m_stateVector;
+        // m_stateVector = mtMm(m_Matrix, m_stateVector);
         std::cout << " Done!" << std::endl;
     }
 
