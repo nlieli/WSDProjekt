@@ -45,7 +45,7 @@ public:
     void updateMatrix(std::unordered_map<std::string, int>& UniqueWords,
         std::vector<std::string>& AllWords);
     void updateStateVector(std::unordered_map<std::string, int> & wordList, std::string& inputWord);
-    void predictWord(std::unordered_map<int, std::string>& UniqueWords);
+    void predictWord(std::unordered_map<int, std::string>& UniqueWords, int numberOfWords);
 
 private:
     void normalizeMatrix(std::vector<std::vector<float>>& Matrix);

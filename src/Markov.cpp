@@ -102,11 +102,13 @@ void Markov::normMat()
 {
     Timer timer;
     size_t n = m_pointerArray.size();
+    float epsilon = 1e-6;
 
     for (size_t j = 0; j < n; ++j)
     {
         size_t m = m_pointerArray[j].size();
         int norm = 0;
+        float check = 0;
 
         for (size_t i = 0; i < m; ++i)
             norm += *m_pointerArray[j][i];
@@ -114,6 +116,9 @@ void Markov::normMat()
         for (size_t k = 0; k < m; ++k)
         {
             *m_pointerArray[j][k] /= norm;
+            // check += *m_pointerArray[j][k];
+            // if (abs(check - 1.0) < epsilon)
+                // std::cout << check << " ";
         }
     }
 }
@@ -164,43 +169,53 @@ int Markov::findIndex(StringVector_T& listOfWords, std::string searchItem)
     return index;
 }
 */
-void Markov::predictWord(std::unordered_map<int, std::string>& UniqueWords)
+void Markov::predictWord(std::unordered_map<int, std::string>& UniqueWords, int numberOfWords)
 {
     size_t n = m_stateVector.size();
     FloatMatrix_T probVec(2, std::vector<float>(n));
-    float randomProbabilityValue = randProb();
     std::string wordPrediction;
-    float prob = 0;
     size_t pos;
+    float epsilon = 1e-5;
 
+    for (int k = 0; k < numberOfWords; ++k)
     {
-        std::cout << "Performing matrix multiplication...";
-        Timer timer;
-        m_stateVector = m_Matrix * m_stateVector;
-        // m_stateVector = mtMm(m_Matrix, m_stateVector);
-        std::cout << " Done!" << std::endl;
-    }
-
-    for (size_t i = 0; i < n; ++i)
-        probVec[0][i] = i;
-
-    probVec[1] = m_stateVector;
-    int sortRange = preSort(probVec);
-    quickSort(probVec, 0, sortRange);
-
-    for (size_t j = 0; j < n; ++j)
-    {
-        prob += probVec[1][j];
-        if (randomProbabilityValue < prob)
         {
-            wordPrediction = UniqueWords[probVec[0][j]];
-            pos = j;
-            break;
+            std::cout << "Performing matrix multiplication...";
+            Timer timer;
+            m_stateVector = m_Matrix * m_stateVector;
+            // m_stateVector = mtMm(m_Matrix, m_stateVector);
+            std::cout << " Done!" << std::endl;
         }
+
+        for (size_t i = 0; i < n; ++i)
+            probVec[0][i] = i;
+
+        probVec[1] = m_stateVector;
+        int sortRange = preSort(probVec);
+        quickSort(probVec, 0, sortRange);
+        float randomProbabilityValue = randProb();
+        float prob = 0;
+
+        for (size_t j = 0; j < n; ++j)
+        {
+            prob += probVec[1][j];
+            if ((randomProbabilityValue - prob) < epsilon)
+            {
+                wordPrediction = UniqueWords[probVec[0][j]];
+                pos = j;
+                break;
+            }
+        }
+
+        float test = 0;
+        for (size_t k = 0; k < probVec[1].size(); ++k)
+        {
+            test += probVec[1][k];
+        }
+        std::cout << test << std::endl;
+
+        std::cout << "\"" << wordPrediction << "\" " << " @ " << pos << " with likelihood " << probVec[1][pos] << "\n";
     }
-
-    std::cout << "\"" << wordPrediction << "\" " << " @ " << pos << " with likelihood " << probVec[1][pos] << "\n";
-
 }
 
 // --- Misc functions
