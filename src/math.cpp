@@ -70,6 +70,7 @@ std::vector<float> operator*(std::vector<std::vector<float>>& Matrix, std::vecto
 {
     size_t m1, n1;
     size_t m2, n2;
+    float epsilon = 1e-6;
 
     m1 = Matrix.size(); // rows
     n1 = Matrix[0].size(); // columns
@@ -85,6 +86,8 @@ std::vector<float> operator*(std::vector<std::vector<float>>& Matrix, std::vecto
     {
         for (size_t j = 0; j < n1; ++j)
         {
+            if (Vector[j] < epsilon) // abs() has been omitted for efficiency
+                continue;
             result[i] += Matrix[i][j] * Vector[j];
         }
     }
@@ -96,6 +99,7 @@ std::vector<float> multiplyMatrixVector(std::vector<std::vector<float>>& Matrix,
 {
     size_t m1, n1;
     size_t m2, n2;
+    float epsilon = 1e-6;
 
     m1 = Matrix.size(); // rows
     n1 = Matrix[0].size(); // columns
@@ -111,6 +115,8 @@ std::vector<float> multiplyMatrixVector(std::vector<std::vector<float>>& Matrix,
     {
         for (size_t j = 0; j < n1; ++j)
         {
+            if (Vector[j] < epsilon) // abs() has been omitted for efficiency
+                continue;
             result[i] += Matrix[i][j] * Vector[j];
         }
     }
@@ -136,33 +142,6 @@ float randProb()
     return randomProbability;
 }
 
-void renSort(std::vector<std::vector<float>>& orderedVector, size_t startingPoint, size_t endingPoint) // --- randomize equal numbers sort
-{
-    bool swapped;
-
-    do { // --- modified bubblesort algorithm
-        swapped = false;    
-        endingPoint--;
-
-        for (startingPoint; startingPoint < endingPoint; ++startingPoint)
-        {
-            if (orderedVector[1][startingPoint] < orderedVector[1][startingPoint + 1])
-            {
-                swapped = true;
-                std::swap(orderedVector[0][startingPoint], orderedVector[0][startingPoint + 1]);
-                std::swap(orderedVector[1][startingPoint], orderedVector[1][startingPoint + 1]);
-            }
-            else if ((orderedVector[1][startingPoint] == orderedVector[1][startingPoint + 1]) && randBool())
-
-            {
-                std::swap(orderedVector[0][startingPoint], orderedVector[0][startingPoint + 1]);
-                std::swap(orderedVector[1][startingPoint], orderedVector[1][startingPoint + 1]);
-            }
-        }
-
-    } while (swapped);
-}
-
 int preSort(std::vector<std::vector<float>>& orderedVector) // puts all non-zero values to the front of the vector (zero values are irrelevant for probability)
 {
     size_t n = orderedVector[0].size();
@@ -180,7 +159,7 @@ int preSort(std::vector<std::vector<float>>& orderedVector) // puts all non-zero
     return swaps - 1; // acts as indicator where the zeros start
 }
 
-void quickSort(std::vector<std::vector<float>>& orderedVector, int startingPoint, int endingPoint) // no need to randomize equal numbers since quickSort is unstable already
+void quickSort(std::vector<std::vector<float>>& orderedVector, int startingPoint, int endingPoint) 
 {
     if (startingPoint >= endingPoint)
         return;

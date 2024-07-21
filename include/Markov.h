@@ -39,6 +39,7 @@ public:
 private:
     // std::vector<std::vector<int>> m_rawMatrix; //Might reinstate later to make additional features possible
     std::vector<int> m_normVector;
+    std::vector<std::vector<float*>> m_pointerArray;
     // --- methods
 public:
     void updateMatrix(std::unordered_map<std::string, int>& UniqueWords,
@@ -48,6 +49,7 @@ public:
 
 private:
     void normalizeMatrix(std::vector<std::vector<float>>& Matrix);
+    void normMat();
     int findIndex(std::vector<std::string>& listOfWords, std::string searchItem);
 };
 

@@ -14,7 +14,6 @@ using IntVector_T = std::vector<int>;
 
 void FileTokenizer::loadFile(const char* fileName)
 {
-    Timer timer;
     std::string word;
     std::ifstream txtFileStream;
     std::stringstream ss;
@@ -46,7 +45,7 @@ void FileTokenizer::loadFile(const char* fileName)
 
         for (auto& element : m_uniqueWordMap)
             m_reverseUniqueMap[element.second] = element.first;
-        
+
         std::cout << " Done!" << std::endl;
     }
 }
@@ -60,7 +59,7 @@ void FileTokenizer::findUniqueWords()
     sort(m_uniqueWordMap.begin(), m_uniqueWordMap.end());
 
     StringVector_T::iterator it;
-    it = std::unique(m_uniqueWordMap.begin(), m_uniqueWordMap.end()); // removes all but first element of every CONSECUTIVE group - also puts iterator at new past-the-end element 
+    it = std::unique(m_uniqueWordMap.begin(), m_uniqueWordMap.end()); // removes all but first element of every CONSECUTIVE group - also puts iterator at new past-the-end element
     m_uniqueWordMap.resize(distance(m_uniqueWordMap.begin(), it)); // shortens the vector from beginning to new past-the-end flag element provided by iterator
     m_uniqueCount = m_uniqueWordMap.size();
     std::cout << " Done!" << std::endl;
@@ -69,28 +68,52 @@ void FileTokenizer::findUniqueWords()
 void Markov::updateMatrix(std::unordered_map<std::string, int>& UniqueWords, StringVector_T& AllWords)
 {
     Timer timer;
-    std::cout << "Creating Matrix...";
+    std::cout << "Creating Matrix...\n";
     size_t n = UniqueWords.size();
     m_Matrix.resize(n, std::vector<float>(n));
     m_normVector.resize(n);
 
     size_t eof = AllWords.size();
     int j, k;
+    float* ptr;
+    m_pointerArray.resize(n);
 
     k = UniqueWords[AllWords[0]];
 
-    for (size_t i = 1; i < eof; ++i) 
+    for (size_t i = 1; i < eof; ++i)
     {
         j = UniqueWords[AllWords[i]];
+        if (m_Matrix[j][k] < 1.0)
+        {
+            ptr = &m_Matrix[j][k];
+            m_pointerArray[k].push_back(ptr);
+        }
 
         ++m_Matrix[j][k];
-        ++m_normVector[k];
+        // ++m_normVector[k];
         k = j; // previous node exit becomes focus
+    }
 
-        if (i == eof - 1) // prevents going out of bounds
+    normMat();
+    // normalizeMatrix(m_Matrix);
+}
+
+void Markov::normMat()
+{
+    Timer timer;
+    size_t n = m_pointerArray.size();
+
+    for (size_t j = 0; j < n; ++j)
+    {
+        size_t m = m_pointerArray[j].size();
+        int norm = 0;
+
+        for (size_t i = 0; i < m; ++i)
+            norm += *m_pointerArray[j][i];
+
+        for (size_t k = 0; k < m; ++k)
         {
-            normalizeMatrix(m_Matrix);
-            return;
+            *m_pointerArray[j][k] /= norm;
         }
     }
 }
@@ -149,17 +172,21 @@ void Markov::predictWord(std::unordered_map<int, std::string>& UniqueWords)
     std::string wordPrediction;
     float prob = 0;
     size_t pos;
-    m_stateVector = m_Matrix * m_stateVector;
+
+    {
+        std::cout << "Performing matrix multiplication...";
+        Timer timer;
+        m_stateVector = m_Matrix * m_stateVector;
+        std::cout << " Done!" << std::endl;
+    }
 
     for (size_t i = 0; i < n; ++i)
         probVec[0][i] = i;
 
     probVec[1] = m_stateVector;
-    std::cout << "Sorting vector...";
     int sortRange = preSort(probVec);
-    quickSort(probVec, 0, sortRange); 
+    quickSort(probVec, 0, sortRange);
 
-    std::cout << " Done!" << std::endl;
     for (size_t j = 0; j < n; ++j)
     {
         prob += probVec[1][j];
