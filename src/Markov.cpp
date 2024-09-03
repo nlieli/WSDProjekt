@@ -7,9 +7,9 @@
 #include <algorithm>
 
 using StringVector_T = std::vector<std::string>;
-using FloatMatrix_T = std::vector<std::vector<float>>;
+using doubleMatrix_T = std::vector<std::vector<double>>;
 using IntMatrix_T = std::vector<std::vector<int>>;
-using FloatVector_T = std::vector<float>;
+using doubleVector_T = std::vector<double>;
 using IntVector_T = std::vector<int>;
 
 void FileTokenizer::loadFile(const char* fileName)
@@ -70,12 +70,12 @@ void Markov::updateMatrix(std::unordered_map<std::string, int>& UniqueWords, Str
     Timer timer;
     std::cout << "Creating Matrix...\n";
     size_t n = UniqueWords.size();
-    m_Matrix.resize(n, std::vector<float>(n));
+    m_Matrix.resize(n, std::vector<double>(n));
     m_normVector.resize(n);
 
     size_t eof = AllWords.size();
     int j, k;
-    float* ptr;
+    double* ptr;
     m_pointerArray.resize(n);
 
     k = UniqueWords[AllWords[0]];
@@ -102,13 +102,13 @@ void Markov::normMat()
 {
     Timer timer;
     size_t n = m_pointerArray.size();
-    float epsilon = 1e-6;
+    double epsilon = 1e-6;
 
     for (size_t j = 0; j < n; ++j)
     {
         size_t m = m_pointerArray[j].size();
         int norm = 0;
-        float check = 0;
+        double check = 0;
 
         for (size_t i = 0; i < m; ++i)
             norm += *m_pointerArray[j][i];
@@ -123,7 +123,7 @@ void Markov::normMat()
     }
 }
 /*
-void Markov::normalizeMatrix(std::vector<std::vector<float>>& Matrix)
+void Markov::normalizeMatrix(std::vector<std::vector<double>>& Matrix)
 {
     Timer timer;
     std::cout << " Done!" << "\nNormalizing Matrix...";
@@ -142,8 +142,15 @@ void Markov::normalizeMatrix(std::vector<std::vector<float>>& Matrix)
 */
 void Markov::updateStateVector(std::unordered_map<std::string, int>& wordList, std::string& inputWord)
 {
+    size_t inS = wordList.size();
     int i = wordList[inputWord];
     size_t n = wordList.size();
+
+    if (inS != n)
+    {
+        wordList.erase(inputWord);
+        throw std::runtime_error("Word not in training list!"); // word is not in unordered map
+    }
     m_stateVector.resize(n);
 
     for (size_t j = 0; j < n; ++j) // skip this loop on first call
@@ -172,10 +179,10 @@ int Markov::findIndex(StringVector_T& listOfWords, std::string searchItem)
 void Markov::predictWord(std::unordered_map<int, std::string>& UniqueWords, int numberOfWords)
 {
     size_t n = m_stateVector.size();
-    FloatMatrix_T probVec(2, std::vector<float>(n));
+    doubleMatrix_T probVec(2, std::vector<double>(n));
     std::string wordPrediction;
     size_t pos;
-    float epsilon = 1e-5;
+    double epsilon = 1e-5;
 
     for (int k = 0; k < numberOfWords; ++k)
     {
@@ -193,8 +200,8 @@ void Markov::predictWord(std::unordered_map<int, std::string>& UniqueWords, int 
         probVec[1] = m_stateVector;
         int sortRange = preSort(probVec);
         quickSort(probVec, 0, sortRange);
-        float randomProbabilityValue = randProb();
-        float prob = 0;
+        double randomProbabilityValue = randProb();
+        double prob = 0;
 
         for (size_t j = 0; j < n; ++j)
         {
@@ -207,12 +214,16 @@ void Markov::predictWord(std::unordered_map<int, std::string>& UniqueWords, int 
             }
         }
 
-        float test = 0;
+        double test = 0;
         for (size_t k = 0; k < probVec[1].size(); ++k)
         {
             test += probVec[1][k];
         }
         std::cout << test << std::endl;
+        
+        for (size_t h = 0; h < probVec[1].size(); ++h) // reset state Vector in case of prediction of multiple words
+            m_stateVector[h] = 0;
+        m_stateVector[probVec[0][pos]] = 1;
 
         std::cout << "\"" << wordPrediction << "\" " << " @ " << pos << " with likelihood " << probVec[1][pos] << "\n";
     }
@@ -230,6 +241,6 @@ Timer::~Timer()
     end = std::chrono::high_resolution_clock::now();
     duration = end - start;
 
-    float ms = duration.count() * 999.0f;
+    double ms = duration.count() * 999.0;
     std::cout << "  execution time: " << ms << " ms" << std::endl;
 }

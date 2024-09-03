@@ -33,13 +33,13 @@ class Markov
 {
     // --- properties
 public:
-    std::vector<std::vector<float>> m_Matrix;
-    std::vector<float> m_stateVector;
+    std::vector<std::vector<double>> m_Matrix;
+    std::vector<double> m_stateVector;
 
 private:
     // std::vector<std::vector<int>> m_rawMatrix; //Might reinstate later to make additional features possible
     std::vector<int> m_normVector;
-    std::vector<std::vector<float*>> m_pointerArray;
+    std::vector<std::vector<double*>> m_pointerArray;
     // --- methods
 public:
     void updateMatrix(std::unordered_map<std::string, int>& UniqueWords,
@@ -48,7 +48,7 @@ public:
     void predictWord(std::unordered_map<int, std::string>& UniqueWords, int numberOfWords);
 
 private:
-    void normalizeMatrix(std::vector<std::vector<float>>& Matrix);
+    void normalizeMatrix(std::vector<std::vector<double>>& Matrix);
     void normMat();
     int findIndex(std::vector<std::string>& listOfWords, std::string searchItem);
 };
@@ -58,7 +58,7 @@ private:
 struct Timer
 {
     std::chrono::high_resolution_clock::time_point start, end;
-    std::chrono::duration<float> duration;
+    std::chrono::duration<double> duration;
 
     Timer();
 
