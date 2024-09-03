@@ -187,11 +187,11 @@ void Markov::predictWord(std::unordered_map<int, std::string>& UniqueWords, int 
     for (int k = 0; k < numberOfWords; ++k)
     {
         {
-            std::cout << "Performing matrix multiplication...";
-            Timer timer;
+            // std::cout << "Performing matrix multiplication...";
+            // Timer timer;
             m_stateVector = m_Matrix * m_stateVector;
             // m_stateVector = mtMm(m_Matrix, m_stateVector);
-            std::cout << " Done!" << std::endl;
+            // std::cout << " Done!" << std::endl;
         }
 
         for (size_t i = 0; i < n; ++i)
@@ -206,7 +206,7 @@ void Markov::predictWord(std::unordered_map<int, std::string>& UniqueWords, int 
         for (size_t j = 0; j < n; ++j)
         {
             prob += probVec[1][j];
-            if ((randomProbabilityValue - prob) < epsilon)
+            if (randomProbabilityValue < prob)
             {
                 wordPrediction = UniqueWords[probVec[0][j]];
                 pos = j;
@@ -214,12 +214,12 @@ void Markov::predictWord(std::unordered_map<int, std::string>& UniqueWords, int 
             }
         }
 
-        double test = 0;
-        for (size_t k = 0; k < probVec[1].size(); ++k)
-        {
-            test += probVec[1][k];
-        }
-        std::cout << test << std::endl;
+        // double test = 0;
+        // for (size_t k = 0; k < probVec[1].size(); ++k)
+        // {
+        //     test += probVec[1][k];
+        // }
+        // std::cout << test << std::endl;
         
         for (size_t h = 0; h < probVec[1].size(); ++h) // reset state Vector in case of prediction of multiple words
             m_stateVector[h] = 0;
