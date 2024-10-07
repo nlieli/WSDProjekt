@@ -1,10 +1,15 @@
 #include <string>
 #include <vector>
 #include <random>
+#include <Math.h>
+#include <iostream>
+#include <thread>
+#include <future>
+#include "Markov.h"
 
 // order of operation matters! M1 * M2 represents the left side multiplication of M2 to M1 and M2 * M1 the right side multiplication of M2 to M1.
 
-std::vector<std::vector<float>> operator*(std::vector<std::vector<float>>& firstMatrix, std::vector<std::vector<float>>& secondMatrix) // Matrix - Matrix multiplication - overloaded operator    
+std::vector<std::vector<double>> operator*(std::vector<std::vector<double>>& firstMatrix, std::vector<std::vector<double>>& secondMatrix) // Matrix - Matrix multiplication - overloaded operator    
 {
     size_t m1, n1;
     size_t m2, n2;
@@ -18,13 +23,13 @@ std::vector<std::vector<float>> operator*(std::vector<std::vector<float>>& first
     if (n1 != m2)
         throw 1; // Incompatible dimensions
 
-    std::vector<std::vector<float>> result(m1, std::vector<float>(n2));
+    std::vector<std::vector<double>> result(m1, std::vector<double>(n2));
 
     for (size_t i = 0; i < m1; ++i) // row selection
     {
-        for (size_t j = 0; j < n2; ++j) // column selection
+        for (size_t k = 0; k < n1; ++k) // sum over elements
         {
-            for (size_t k = 0; k < n1; ++k) // sum over elements
+            for (size_t j = 0; j < n2; ++j) // column selection
             {
                 result[i][j] += firstMatrix[i][k] * secondMatrix[k][j];
             }
@@ -34,7 +39,7 @@ std::vector<std::vector<float>> operator*(std::vector<std::vector<float>>& first
     return result;
 }
 
-std::vector<std::vector<float>> multiplyMatrices(std::vector<std::vector<float>>& firstMatrix, std::vector<std::vector<float>>& secondMatrix) // Matrix - Matrix multiplication
+std::vector<std::vector<double>> multiplyMatrices(std::vector<std::vector<double>>& firstMatrix, std::vector<std::vector<double>>& secondMatrix) // Matrix - Matrix multiplication
 {
     size_t m1, n1;
     size_t m2, n2;
@@ -48,13 +53,13 @@ std::vector<std::vector<float>> multiplyMatrices(std::vector<std::vector<float>>
     if (n1 != m2)
         throw 1; // Incompatible dimensions
 
-    std::vector<std::vector<float>> result(m1, std::vector<float>(n2));
+    std::vector<std::vector<double>> result(m1, std::vector<double>(n2));
 
     for (size_t i = 0; i < m1; ++i) // row selection
     {
-        for (size_t j = 0; j < n2; ++j) // column selection
+        for (size_t k = 0; k < n1; ++k) // sum over elements
         {
-            for (size_t k = 0; k < n1; ++k) // sum over elements
+            for (size_t j = 0; j < n2; ++j) // column selection
             {
                 result[i][j] += firstMatrix[i][k] * secondMatrix[k][j];
             }
@@ -64,10 +69,11 @@ std::vector<std::vector<float>> multiplyMatrices(std::vector<std::vector<float>>
     return result;
 }
 
-std::vector<float> operator*(std::vector<std::vector<float>>& Matrix, std::vector<float>& Vector) // Matrix - Vector multiplication - overloaded operator
+std::vector<double> operator*(std::vector<std::vector<double>>& Matrix, std::vector<double>& Vector) // Matrix - Vector multiplication - overloaded operator
 {
     size_t m1, n1;
     size_t m2, n2;
+    double epsilon = 1e-6;
 
     m1 = Matrix.size(); // rows
     n1 = Matrix[0].size(); // columns
@@ -77,12 +83,14 @@ std::vector<float> operator*(std::vector<std::vector<float>>& Matrix, std::vecto
     if (n1 != m2)
         throw 1; // Incompatible dimensions
 
-    std::vector<float> result(m1);
+    std::vector<double> result(m1);
 
     for (size_t i = 0; i < m1; ++i)
     {
         for (size_t j = 0; j < n1; ++j)
         {
+            if (Vector[j] < epsilon) // abs() has been omitted for efficiency
+                continue;
             result[i] += Matrix[i][j] * Vector[j];
         }
     }
@@ -90,10 +98,11 @@ std::vector<float> operator*(std::vector<std::vector<float>>& Matrix, std::vecto
     return result;
 }
 
-std::vector<float> multiplyMatrixVector(std::vector<std::vector<float>>& Matrix, std::vector<float>& Vector) // Matrix - Vector multiplication
+std::vector<double> multiplyMatrixVector(const std::vector<std::vector<double>>& Matrix, const std::vector<double>& Vector) // Matrix - Vector multiplication
 {
     size_t m1, n1;
     size_t m2, n2;
+    double epsilon = 1e-6;
 
     m1 = Matrix.size(); // rows
     n1 = Matrix[0].size(); // columns
@@ -103,12 +112,14 @@ std::vector<float> multiplyMatrixVector(std::vector<std::vector<float>>& Matrix,
     if (n1 != m2)
         throw 1; // Incompatible dimensions
 
-    std::vector<float> result(m1);
+    std::vector<double> result(m1);
 
-    for (size_t i = 0; i < m1; ++i) 
+    for (size_t i = 0; i < m1; ++i)
     {
         for (size_t j = 0; j < n1; ++j)
         {
+            if (Vector[j] < epsilon) // abs() has been omitted for efficiency
+                continue;
             result[i] += Matrix[i][j] * Vector[j];
         }
     }
@@ -125,39 +136,76 @@ bool randBool()
     return randomBool;
 }
 
-float randProb()
+double randProb()
 {
-    float randomProbability;
+    double randomProbability;
     std::random_device rd;
-    std::uniform_real_distribution<float> dist(0, 1);
+    std::uniform_real_distribution<double> dist(0, 1);
     randomProbability = dist(rd);
     return randomProbability;
 }
 
-void renSort(std::vector<std::vector<float>>& orderedVector) // --- randomize equal numbers sort
+int preSort(std::vector<std::vector<double>>& orderedVector) // puts all non-zero values to the front of the vector (zero values are irrelevant for probability)
 {
     size_t n = orderedVector[0].size();
-    bool swapped;
+    int swaps = 0;
 
-    do { // --- modified bubblesort algorithm
-        swapped = false;
-        n--;
-
-        for (size_t i = 0; i < n; ++i)
+    for (size_t i = 0; i < n; ++i)
+    {
+        if (orderedVector[1][i] > 0)
         {
-            if (orderedVector[1][i] < orderedVector[1][i + 1])
-            {
-                swapped = true;
-                std::swap(orderedVector[0][i], orderedVector[0][i + 1]);
-                std::swap(orderedVector[1][i], orderedVector[1][i + 1]);
-            }
-            else if ((orderedVector[1][i] == orderedVector[1][i + 1]) && randBool())
-            {
-                std::swap(orderedVector[0][i], orderedVector[0][i + 1]);
-                std::swap(orderedVector[1][i], orderedVector[1][i + 1]);
-            }
+            std::swap(orderedVector[0][i], orderedVector[0][swaps]);
+            std::swap(orderedVector[1][i], orderedVector[1][swaps]);
+            ++swaps;
         }
-
-    } while (swapped);
+    }
+    return swaps - 1; // acts as indicator where the zeros start
 }
 
+void quickSort(std::vector<std::vector<double>>& orderedVector, int startingPoint, int endingPoint)
+{
+    if (startingPoint >= endingPoint)
+        return;
+
+    int pivot = partition(orderedVector, startingPoint, endingPoint);
+    quickSort(orderedVector, startingPoint, pivot - 1);
+    quickSort(orderedVector, pivot + 1, endingPoint);
+
+}
+
+int partition(std::vector<std::vector<double>>& orderedVector, int startingPoint, int endingPoint)
+{
+    double pivot = orderedVector[1][startingPoint];
+    int i = startingPoint;
+
+    for (int j = startingPoint + 1; j <= endingPoint; ++j)
+    {
+        if (orderedVector[1][j] > pivot)
+        {
+            ++i;
+            std::swap(orderedVector[1][j], orderedVector[1][i]);
+            std::swap(orderedVector[0][j], orderedVector[0][i]);
+        }
+    }
+    std::swap(orderedVector[1][startingPoint], orderedVector[1][i]);
+    std::swap(orderedVector[0][startingPoint], orderedVector[0][i]);
+
+    return i;
+}
+
+std::vector<double> mtMm(std::vector<std::vector<double>>& Matrix, std::vector<double>& Vector) //multi-thread Matrix multiplication
+{
+    size_t n = Matrix.size();
+    size_t w1 = floor(n / 2);
+
+    std::vector<std::vector<double>> M1(Matrix.begin(), Matrix.begin() + w1);
+    std::vector<std::vector<double>> M2(Matrix.begin() + w1, Matrix.end());
+    auto multiplyMatrixVectorPtr = static_cast<std::vector<double>(*)(const std::vector<std::vector<double>>&, const std::vector<double>&)>(&multiplyMatrixVector);
+    Timer timer;
+    std::future<std::vector<double>> fu = std::async(std::launch::async, multiplyMatrixVectorPtr, std::cref(M1), std::cref(Vector));
+    std::vector<double> R2 = M2 * Vector;
+    std::vector<double> R1 = fu.get(); 
+
+    R1.insert(R1.end(), R2.begin(), R2.end());
+    return R1;
+}

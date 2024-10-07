@@ -3,20 +3,30 @@
 
 int main()
 {
+    Timer timer;
     std::string currentWord;
     FileTokenizer FT;
     Markov Mv;
 
-    FT.loadFile("../data/english/english_random_topic.txt");
-    FT.findUniqueWords();
+    FT.loadFile("../data/english/pg2600.txt");
 
-    Mv.updateMatrix(FT.m_uniqueWordList, FT.m_fullWordList);
+    Mv.updateMatrix(FT.m_uniqueWordMap, FT.m_fullWordList);
 
     for (;;)
     {
+        std::cout << "Input seed word: ";
         std::cin >> currentWord;
-        Mv.updateStateVector(FT.m_uniqueWordList, currentWord);
-        Mv.predictWord(FT.m_uniqueWordList);
+
+        try {
+            Mv.updateStateVector(FT.m_uniqueWordMap, currentWord);
+        } 
+        catch (const std::exception& e)
+        {
+                std::cout << "[Error]: Word is not in training list. Try again using a different word." << std::endl;
+                continue;
+        }
+
+        Mv.predictWord(FT.m_reverseUniqueMap, 7);
     }
     return 0;
 }
