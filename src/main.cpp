@@ -8,7 +8,7 @@ int main()
     FileTokenizer FT;
     Markov Mv;
 
-    FT.loadFile("../data/english/pg4200.txt");
+    FT.loadFile("../data/english/pg2600.txt");
 
     Mv.updateMatrix(FT.m_uniqueWordMap, FT.m_fullWordList);
 
